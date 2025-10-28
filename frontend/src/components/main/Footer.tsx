@@ -55,10 +55,9 @@ export default function FooterAesthetic() {
         "after:transition after:bg-white/10";
 
     return (
-        <footer className="relative mt-16">
+        <footer className="relative">
             {/* Franja glow superior */}
             <div className="h-[2px] w-full bg-gradient-to-r from-[#7C3AED] via-[#A855F7] to-[#F97316]" />
-
             {/* Cuerpo */}
             <div className="w-full bg-gradient-to-b from-[#0B0A17] via-[#121024] to-[#1A132B]/95 border-t border-white/10">
                 <div className="max-w-7xl mx-auto px-6 py-10">
@@ -99,24 +98,6 @@ export default function FooterAesthetic() {
 
                         {/* Social */}
                         <div className="flex justify-center md:justify-end gap-4">
-                            <a
-                                href="#x"
-                                aria-label="X / Twitter"
-                                className={`p-2 rounded-xl border border-white/10 text-white/80 hover:text-white hover:border-white/25 ${hoverLift}`}
-                            >
-                                <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
-                                    <path d="M18 2h3l-7.5 8.5L22 22h-6l-4-6-4 6H2l8.5-11.5L2 2h6l4 5.5L18 2z" />
-                                </svg>
-                            </a>
-                            <a
-                                href="#instagram"
-                                aria-label="Instagram"
-                                className={`p-2 rounded-xl border border-white/10 text-white/80 hover:text-white hover:border-white/25 ${hoverLift}`}
-                            >
-                                <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
-                                    <path d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm0 2a3 3 0 00-3 3v10a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3H7zm5 3a5 5 0 110 10 5 5 0 010-10zm0 2.2A2.8 2.8 0 1014.8 12 2.8 2.8 0 0012 9.2zM17.8 6a1 1 0 110 2 1 1 0 010-2z" />
-                                </svg>
-                            </a>
                             <a
                                 href="#github"
                                 aria-label="GitHub"

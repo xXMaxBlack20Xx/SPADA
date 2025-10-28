@@ -71,7 +71,7 @@ export default function HeaderAesthetic() {
               className="h-10 w-10 object-contain drop-shadow-[0_0_12px_rgba(168,85,247,0.45)]"
             />
             <div className="flex flex-col leading-tight">
-              <span className="text-xl font-extrabold tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-white to-[#F5D0FE]">
+              <span className="text-2xl font-extrabold tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-white to-[#F5D0FE]">
                 SPADA
               </span>
             </div>
@@ -83,7 +83,7 @@ export default function HeaderAesthetic() {
               <a
                 key={item.href}
                 href={item.href}
-                className={`relative text-sm font-medium text-white/80 hover:text-white transition-colors ${hoverLift}`}
+                className={`relative text-m font-medium text-white/80 hover:text-white transition-colors ${hoverLift}`}
               >
                 {item.label}
                 <span className="absolute -bottom-2 left-0 h-[2px] w-0 bg-gradient-to-r from-[#A855F7] to-[#F97316] transition-all duration-300 hover:w-full" />
@@ -97,7 +97,7 @@ export default function HeaderAesthetic() {
             <div className="relative">
               <button
                 onClick={() => setLangOpen((v) => !v)}
-                className={`px-3 py-2 text-sm font-semibold rounded-xl border border-white/15 text-white/90 hover:text-white hover:border-white/25 transition flex items-center gap-2 ${hoverLift}`}
+                className={`px-3 py-2 text-m font-semibold rounded-xl border border-white/15 text-white/90 hover:text-white hover:border-white/25 transition flex items-center gap-2 ${hoverLift}`}
                 aria-expanded={langOpen}
                 aria-label="Cambiar idioma"
               >
@@ -128,10 +128,10 @@ export default function HeaderAesthetic() {
                     <button
                       key={opt.id}
                       onClick={() => {
-                        setLang(opt.id); // ⬅️ cambia el idioma global
+                        setLang(opt.id);
                         setLangOpen(false);
                       }}
-                      className="w-full text-left px-3 py-2 rounded-lg text-sm text-white/90 hover:bg-white/10 transition"
+                      className="w-full text-left px-3 py-2 rounded-lg text-m text-white/90 hover:bg-white/10 transition"
                     >
                       {opt.label}
                     </button>
@@ -142,13 +142,13 @@ export default function HeaderAesthetic() {
 
             <a
               href="#login"
-              className={`px-4 py-2 text-sm font-semibold rounded-xl border border-white/15 text-white/90 hover:text-white hover:border-white/25 transition ${hoverLift}`}
+              className={`px-4 py-2 text-m font-semibold rounded-xl border border-white/15 text-white/90 hover:text-white hover:border-white/25 transition ${hoverLift}`}
             >
               {t.login}
             </a>
             <a
               href="#signup"
-              className={`px-4 py-2 text-sm font-semibold rounded-xl bg-gradient-to-r from-[#A855F7] via-[#7C3AED] to-[#F97316] hover:brightness-110 transition shadow-[0_0_24px_rgba(249,115,22,0.25)] ${hoverLift}`}
+              className={`px-4 py-2 text-m font-semibold rounded-xl bg-gradient-to-r from-[#A855F7] via-[#7C3AED] to-[#F97316] hover:brightness-110 transition shadow-[0_0_24px_rgba(249,115,22,0.25)] ${hoverLift}`}
             >
               {t.signup}
             </a>
@@ -207,7 +207,7 @@ export default function HeaderAesthetic() {
                   <button
                     key={opt}
                     onClick={() => setLang(opt)}
-                    className={`flex-1 text-center px-3 py-3 text-sm font-semibold rounded-xl border border-white/15 text-white/90 hover:text-white hover:border-white/25 transition ${hoverLift} ${
+                    className={`flex-1 text-center px-3 py-3 text-m font-semibold rounded-xl border border-white/15 text-white/90 hover:text-white hover:border-white/25 transition ${hoverLift} ${
                       lang === opt ? "bg-white/10" : "bg-transparent"
                     }`}
                   >
@@ -219,13 +219,13 @@ export default function HeaderAesthetic() {
               <div className="flex gap-3 pt-2">
                 <a
                   href="#login"
-                  className={`flex-1 text-center px-4 py-3 text-sm font-semibold rounded-xl border border-white/15 text-white/90 hover:text-white hover:border-white/25 transition ${hoverLift}`}
+                  className={`flex-1 text-center px-4 py-3 text-m font-semibold rounded-xl border border-white/15 text-white/90 hover:text-white hover:border-white/25 transition ${hoverLift}`}
                 >
                   {t.login}
                 </a>
                 <a
                   href="#signup"
-                  className={`flex-1 text-center px-4 py-3 text-sm font-semibold rounded-xl bg-gradient-to-r from-[#A855F7] via-[#7C3AED] to-[#F97316] hover:brightness-110 transition shadow-[0_0_24px_rgba(249,115,22,0.25)] ${hoverLift}`}
+                  className={`flex-1 text-center px-4 py-3 text-m font-semibold rounded-xl bg-gradient-to-r from-[#A855F7] via-[#7C3AED] to-[#F97316] hover:brightness-110 transition shadow-[0_0_24px_rgba(249,115,22,0.25)] ${hoverLift}`}
                 >
                   {t.signup}
                 </a>

@@ -7,115 +7,79 @@ const i18n: Record<
   Lang,
   {
     title: string;
-    items: { key: string; label: string; caption: string }[];
+    items: {
+      key: "realtime" | "filters" | "openaccess";
+      label: string;
+      caption: string;
+    }[];
   }
 > = {
   es: {
-    title: "Capacidades del sistema",
+    title: "Ventajas clave",
     items: [
       {
-        key: "messaging",
-        label: "Mensajería",
-        caption: "Notifica resultados y alertas",
-      },
-      { key: "voice", label: "Voz", caption: "Insights y picks por audio" },
-      { key: "video", label: "Video", caption: "Clips y análisis visual" },
-      {
-        key: "telephony",
-        label: "Telefonía",
-        caption: "Líneas para tips premium",
+        key: "realtime",
+        label: "Predicciones en tiempo real",
+        caption: "Estadística avanzada sin límites ni ventanas de espera.",
       },
       {
-        key: "analytics",
-        label: "Analytics",
-        caption: "Modelos, métricas y ROI",
+        key: "filters",
+        label: "Filtros inteligentes",
+        caption: "Filtra por jugador, liga y fecha para afinar tus picks.",
+      },
+      {
+        key: "openaccess",
+        label: "Acceso sin paywalls",
+        caption: "Todos los análisis sin suscripciones ni bloqueos.",
       },
     ],
   },
   en: {
-    title: "System capabilities",
+    title: "Key advantages",
     items: [
       {
-        key: "messaging",
-        label: "Messaging",
-        caption: "Notify results & alerts",
-      },
-      { key: "voice", label: "Voice", caption: "Insights & picks by audio" },
-      { key: "video", label: "Video", caption: "Clips and visual analysis" },
-      {
-        key: "telephony",
-        label: "Telephony",
-        caption: "Lines for premium tips",
+        key: "realtime",
+        label: "Real-time predictions",
+        caption: "Advanced stats with no throttling or delays.",
       },
       {
-        key: "analytics",
-        label: "Analytics",
-        caption: "Models, metrics & ROI",
+        key: "filters",
+        label: "Smart filters",
+        caption: "Filter by player, league, and date to refine picks.",
+      },
+      {
+        key: "openaccess",
+        label: "No paywalls",
+        caption: "Full analysis without subscriptions or locks.",
       },
     ],
   },
   zh: {
-    title: "系统能力",
+    title: "核心优势",
     items: [
-      { key: "messaging", label: "消息", caption: "结果与提醒通知" },
-      { key: "voice", label: "语音", caption: "音频洞察与推荐" },
-      { key: "video", label: "视频", caption: "剪辑与可视化分析" },
-      { key: "telephony", label: "电话", caption: "付费线路与提示" },
-      { key: "analytics", label: "分析", caption: "模型、指标与回报" },
+      {
+        key: "realtime",
+        label: "实时预测",
+        caption: "高级统计，无限制、无等待。",
+      },
+      {
+        key: "filters",
+        label: "智能筛选",
+        caption: "按球员、联赛与日期精准筛选。",
+      },
+      {
+        key: "openaccess",
+        label: "无付费墙",
+        caption: "全部分析无需订阅与解锁。",
+      },
     ],
   },
 };
 
 // --- Iconos lineales (SVG) ---
 const Icons = {
-  messaging: () => (
-    <svg
-      viewBox="0 0 24 24"
-      className="h-6 w-6"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-    >
-      <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" />
-      <path d="M7 8h10M7 12h6" />
-    </svg>
-  ),
-  voice: () => (
-    <svg
-      viewBox="0 0 24 24"
-      className="h-6 w-6"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-    >
-      <rect x="9" y="2" width="6" height="12" rx="3" />
-      <path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3" />
-    </svg>
-  ),
-  video: () => (
-    <svg
-      viewBox="0 0 24 24"
-      className="h-6 w-6"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-    >
-      <rect x="2" y="5" width="15" height="14" rx="2" />
-      <path d="M17 8l5-3v14l-5-3z" />
-    </svg>
-  ),
-  telephony: () => (
-    <svg
-      viewBox="0 0 24 24"
-      className="h-6 w-6"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-    >
-      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.2 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.31 1.77.57 2.61a2 2 0 0 1-.45 2.11L8.1 9.9a16 16 0 0 0 6 6l1.46-1.13a2 2 0 0 1 2.11-.45c.84.26 1.71.45 2.61.57A2 2 0 0 1 22 16.92z" />
-    </svg>
-  ),
-  analytics: () => (
+  // Predicciones en tiempo real: gráfico con rayo
+  realtime: () => (
     <svg
       viewBox="0 0 24 24"
       className="h-6 w-6"
@@ -124,16 +88,41 @@ const Icons = {
       strokeWidth="2"
     >
       <path d="M3 3v18h18" />
-      <path d="M7 13l3-3 4 4 5-7" />
-      <circle cx="10" cy="10" r="1.5" />
-      <circle cx="14" cy="14" r="1.5" />
-      <circle cx="19" cy="7" r="1.5" />
+      <path d="M7 15l3-4 3 2 4-6" />
+      <path d="M14 13l2-5" />
+      <path d="M12 7l2-4" />
+    </svg>
+  ),
+  // Filtros inteligentes: embudo/funnel
+  filters: () => (
+    <svg
+      viewBox="0 0 24 24"
+      className="h-6 w-6"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
+      <path d="M3 4h18l-7 8v5l-4 3v-8L3 4z" />
+    </svg>
+  ),
+  // Acceso sin paywalls: candado abierto
+  openaccess: () => (
+    <svg
+      viewBox="0 0 24 24"
+      className="h-6 w-6"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
+      <rect x="3" y="10" width="18" height="11" rx="2" />
+      <path d="M7 10V7a5 5 0 0 1 9.7-1" />
+      <path d="M12 15v2" />
     </svg>
   ),
 };
 
 type Tile = {
-  key: string;
+  key: "realtime" | "filters" | "openaccess";
   icon: JSX.Element;
   accentFrom: string;
   accentTo: string;
@@ -143,44 +132,28 @@ type Tile = {
 
 const layout: Tile[] = [
   {
-    key: "messaging",
-    icon: <Icons.messaging />,
+    key: "realtime",
+    icon: <Icons.realtime />,
     accentFrom: "#A855F7",
     accentTo: "#22D3EE",
-    rotate: "-rotate-3",
-    translate: "md:-translate-y-2",
-  },
-  {
-    key: "voice",
-    icon: <Icons.voice />,
-    accentFrom: "#7C3AED",
-    accentTo: "#F97316",
-    rotate: "rotate-2",
-    translate: "md:translate-y-3",
-  },
-  {
-    key: "video",
-    icon: <Icons.video />,
-    accentFrom: "#A855F7",
-    accentTo: "#34D399",
-    rotate: "-rotate-1",
+    rotate: "-rotate-2",
     translate: "md:-translate-y-1",
   },
   {
-    key: "telephony",
-    icon: <Icons.telephony />,
-    accentFrom: "#22D3EE",
-    accentTo: "#F97316",
+    key: "filters",
+    icon: <Icons.filters />,
+    accentFrom: "#7C3AED",
+    accentTo: "#34D399",
     rotate: "rotate-1",
     translate: "md:translate-y-1",
   },
   {
-    key: "analytics",
-    icon: <Icons.analytics />,
+    key: "openaccess",
+    icon: <Icons.openaccess />,
     accentFrom: "#F97316",
     accentTo: "#A855F7",
-    rotate: "-rotate-2",
-    translate: "md:-translate-y-2",
+    rotate: "-rotate-1",
+    translate: "md:-translate-y-1",
   },
 ];
 
@@ -190,16 +163,13 @@ export default function Drawings() {
 
   return (
     <section
-      className="relative isolate overflow-hidden bg-[#0B0A17] pt-20 pb-24
-                 before:absolute before:inset-0 before:bg-[radial-gradient(60rem_40rem_at_50%_20%,rgba(168,85,247,0.18),transparent_60%)]
-                 after:absolute after:bottom-[-6vw] after:left-0 after:right-0 after:h-[12vw]
-                 after:bg-white after:[clip-path:polygon(0_0,100%_100%,0_100%)]"
+      className="relative isolate overflow-hidden bg-[#1a1d21] pt-20 pb-24"
       aria-labelledby="drawings-title"
     >
       {/* Grid sutil del fondo */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.07]"
+        className="pointer-events-none absolute inset-0 opacity-[0.50]"
         style={{
           backgroundImage:
             "linear-gradient(to right, rgba(255,255,255,.15) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,.15) 1px, transparent 1px)",
@@ -207,44 +177,17 @@ export default function Drawings() {
         }}
       />
 
-      {/* Conectores (puntos + líneas) */}
-      <svg
-        aria-hidden
-        className="absolute inset-0 w-full h-full opacity-20"
-        viewBox="0 0 100 100"
-        preserveAspectRatio="none"
-      >
-        <defs>
-          <radialGradient id="dot" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#A855F7" />
-            <stop offset="100%" stopColor="transparent" />
-          </radialGradient>
-        </defs>
-        <circle cx="20" cy="60" r="1.2" fill="url(#dot)" />
-        <circle cx="50" cy="45" r="1.2" fill="url(#dot)" />
-        <circle cx="80" cy="62" r="1.2" fill="url(#dot)" />
-        <path
-          d="M20 60 C35 55, 45 50, 50 45 S65 55, 80 62"
-          stroke="#A855F7"
-          strokeWidth="0.5"
-          fill="none"
-        />
-      </svg>
-
       <div className="relative z-10 mx-auto max-w-6xl px-6">
         <h2
           id="drawings-title"
-          className="text-center text-2xl md:text-3xl font-extrabold text-white mb-12
+          className="text-center text-2xl md:text-5xl font-extrabold text-white mb-12
                      drop-shadow-[0_0_16px_rgba(0,0,0,0.35)]"
         >
           {t.title}
         </h2>
 
-        {/* Mosaico isométrico */}
-        <div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8
-                     place-items-center"
-        >
+        {/* Mosaico isométrico (3) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 place-items-center">
           {layout.map((tile) => {
             const trans = t.items.find((i) => i.key === tile.key)!;
             return (
@@ -260,48 +203,30 @@ export default function Drawings() {
                                 bg-gradient-to-r from-black/40 via-black/30 to-black/40"
                 />
 
-                {/* Plataforma apilada (3 layers) */}
+                {/* Plataforma apilada */}
                 <div className="relative">
-                  {/* capa 3 */}
+                  <div className="mx-auto h-10 rounded-2xl w-[92%] bg-white/5 border border-white/10 backdrop-blur-sm translate-y-6" />
+                  <div className="mx-auto h-12 rounded-2xl w-[96%] bg-white/7 border border-white/10 backdrop-blur-sm translate-y-3" />
                   <div
-                    className="mx-auto h-10 rounded-2xl w-[92%] bg-white/5 border border-white/10
-                                  backdrop-blur-sm translate-y-6"
-                  />
-                  {/* capa 2 */}
-                  <div
-                    className="mx-auto h-12 rounded-2xl w-[96%] bg-white/7 border border-white/10
-                                  backdrop-blur-sm translate-y-3"
-                  />
-                  {/* capa 1 (top) */}
-                  <div
-                    className="relative mx-auto h-24 rounded-3xl w-full
+                    className="relative mx-auto h-28 rounded-3xl w-full
                                bg-[#0E0C1C] border border-white/10
                                shadow-[0_12px_40px_rgba(168,85,247,0.15)]
                                overflow-hidden"
-                    style={{
-                      transform: "rotateX(6deg) translateZ(0)",
-                    }}
+                    style={{ transform: "rotateX(6deg) translateZ(0)" }}
                   >
                     {/* glow borde superior */}
                     <div
                       className="absolute inset-x-0 top-0 h-[3px]"
                       style={{
                         background: `linear-gradient(90deg, ${tile.accentFrom}, ${tile.accentTo})`,
-                        opacity: 0.8,
+                        opacity: 0.85,
                       }}
                     />
-                    {/* brillo diagonal */}
-                    <div
-                      className="absolute -inset-6 opacity-20 blur-2xl pointer-events-none"
-                      style={{
-                        background: `conic-gradient(from_180deg_at_50%_50%, ${tile.accentFrom}, ${tile.accentTo}, ${tile.accentFrom})`,
-                      }}
-                    />
+
                     {/* contenido */}
                     <div
-                      className="relative z-10 flex h-full items-center gap-4 px-6
-                                 text-white transition-transform duration-500
-                                 group-hover:[transform:translateZ(20px)]"
+                      className="relative z-10 flex h-full items-center gap-4 px-6 text-white
+                                 transition-transform duration-500 group-hover:[transform:translateZ(20px)]"
                       style={{ transform: "translateZ(0)" }}
                     >
                       <div
@@ -309,13 +234,13 @@ export default function Drawings() {
                                    bg-white/10 border border-white/10
                                    shadow-[0_0_24px_rgba(255,255,255,0.08)]"
                         style={{
-                          backgroundImage: `linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.02))`,
+                          backgroundImage:
+                            "linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.02))",
                         }}
                       >
                         <span
                           className="text-white"
                           style={{
-                            color: "white",
                             textShadow: "0 0 12px rgba(168,85,247,0.35)",
                           }}
                         >
@@ -347,11 +272,6 @@ export default function Drawings() {
           })}
         </div>
       </div>
-
-      {/* Animaciones locales */}
-      <style>{`
-        .white\\/7 { background: rgba(255,255,255,.07); }
-      `}</style>
     </section>
   );
 }

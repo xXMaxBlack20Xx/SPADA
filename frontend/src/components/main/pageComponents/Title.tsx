@@ -110,7 +110,7 @@ export default function HeroSplash() {
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3 animate-fade-up delay-300">
           <a
             href="#signup"
-            className="inline-flex items-center justify-center px-5 py-3 rounded-xl text-sm font-semibold
+            className="inline-flex items-center justify-center px-5 py-3 rounded-xl text-m font-semibold
                        bg-gradient-to-r from-[#F97316] via-[#7C3AED] to-[#A855F7]
                        hover:brightness-110 transition
                        shadow-[0_0_24px_rgba(249,115,22,0.25)]"
