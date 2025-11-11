@@ -57,9 +57,9 @@ export default function FooterAesthetic() {
     return (
         <footer className="relative">
             {/* Franja glow superior */}
-            <div className="h-[2px] w-full bg-gradient-to-r from-[#7C3AED] via-[#A855F7] to-[#F97316]" />
+            <div className="h-0.5 w-full bg-linear-to-r from-[#7C3AED] via-[#A855F7] to-[#F97316]" />
             {/* Cuerpo */}
-            <div className="w-full bg-gradient-to-b from-[#0B0A17] via-[#121024] to-[#1A132B]/95 border-t border-white/10">
+            <div className="w-full bg-linear-to-b from-[#0B0A17] via-[#121024] to-[#1A132B]/95 border-t border-white/10">
                 <div className="max-w-7xl mx-auto px-6 py-10">
                     {/* Top: Logo + Links + Social */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-center">
@@ -71,7 +71,7 @@ export default function FooterAesthetic() {
                                 className="h-10 w-10 object-contain drop-shadow-[0_0_12px_rgba(168,85,247,0.45)]"
                             />
                             <div className="flex flex-col leading-tight">
-                                <span className="text-lg font-extrabold tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-white to-[#F5D0FE]">
+                                <span className="text-lg font-extrabold tracking-wide bg-clip-text text-transparent bg-linear-to-r from-white to-[#F5D0FE]">
                                     SPADA
                                 </span>
                                 <span className="text-[11px] uppercase tracking-widest text-white/50">

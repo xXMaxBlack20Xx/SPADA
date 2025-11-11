@@ -7,9 +7,9 @@ export default function SpadaMain() {
   return (
     <>
       <Title />
-      <About imageSrc="src/assets/img/main/main_stats.png"/>
+      <About />
       <Capabilities />
-      <Join imageSrc="src/assets/img/main/SPADA_Logo_Letras_B&W.png"/>
+      <Join />
     </>
   );
 }
