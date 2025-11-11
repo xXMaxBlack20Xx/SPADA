@@ -43,7 +43,21 @@ export default function Join({ className = '' }: JoinProps): JSX.Element {
             className={`relative bg-linear-to-b from-[#0B0A17] via-[#121024] to-[#1A132B] py-24 px-6 ${className}`}
             aria-labelledby="join-title"
         >
-            <div className="mx-auto max-w-6xl relative isolate overflow-hidden rounded-3xl bg-[#1a1d21] p-10 md:p-16 flex flex-col md:flex-row items-center justify-between gap-10 shadow-[0_12px_40px_rgba(168,85,247,0.15)]">
+            <div className="mx-auto max-w-7xl relative isolate overflow-hidden rounded-3xl bg-[#1a1d21] p-10 md:p-16 flex flex-col md:flex-row items-center justify-between gap-10 shadow-[0_12px_40px_rgba(168,85,247,0.15)]">
+                {/* Image section */}
+                <div className="relative flex justify-center items-center w-full md:w-auto">
+                    <img
+                        src={imageSrc}
+                        alt="SPADA logo"
+                        className="w-100 md:w-200 drop-shadow-[0_0_40px_rgba(124,58,237,0.45)]"
+                    />
+                    {/* Floating glows */}
+                    <div
+                        aria-hidden
+                        className="absolute -z-10 inset-0 blur-3xl opacity-40 bg-[radial-gradient(25rem_25rem_at_center,rgba(168,85,247,0.25),transparent_70%)]"
+                    />
+                </div>
+
                 {/* Text content */}
                 <div className="max-w-xl">
                     <h2
@@ -60,20 +74,6 @@ export default function Join({ className = '' }: JoinProps): JSX.Element {
                     >
                         {t.cta}
                     </a>
-                </div>
-
-                {/* Image section */}
-                <div className="relative flex justify-center items-center w-full md:w-auto">
-                    <img
-                        src={imageSrc}
-                        alt="SPADA logo"
-                        className="w-56 md:w-200 drop-shadow-[0_0_40px_rgba(124,58,237,0.45)]"
-                    />
-                    {/* Floating glows */}
-                    <div
-                        aria-hidden
-                        className="absolute -z-10 inset-0 blur-3xl opacity-40 bg-[radial-gradient(25rem_25rem_at_center,rgba(168,85,247,0.25),transparent_70%)]"
-                    />
                 </div>
             </div>
 
