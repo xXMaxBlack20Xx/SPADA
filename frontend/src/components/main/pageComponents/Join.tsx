@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 import { useLanguage } from '../../../context/LanguageContext';
-import imageSrc from '@/assets/img/main/main_stats.png';
+import imageSrc from '@/assets/img/main/SPADA_Logo_Letras_B&W.png';
 
 type Lang = 'es' | 'en' | 'zh';
 
