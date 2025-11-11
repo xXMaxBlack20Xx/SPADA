@@ -1,0 +1,35 @@
+@import 'tailwindcss';
+
+:root {
+    /* ======================================== */
+    /* SPADA - COLOR PALETTE           */
+    /* ======================================== */
+
+    /* BACKGROUNDS & SURFACES  */
+    --color-background: #1a1d21;
+    /* A rich, deep black for the main background */
+    --color-surface: #2e3440;
+    /* A dark grey for elements like cards or sidebars */
+
+    /* ACCENT COLORS  */
+    --color-primary: #d08770;
+    /* A strong but pleasant orange for buttons and links */
+    --color-secondary: #ebcb8b;
+    /* A warm yellow for highlights or secondary actions */
+
+    /* TEXT COLORS  */
+    --color-text: #eceff4;
+    /* An off-white for primary text to reduce eye strain */
+    --color-text-muted: #a3b3cc;
+    /* A muted, lighter grey for secondary text */
+}
+
+html,
+body {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
