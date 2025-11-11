@@ -45,7 +45,7 @@ const i18n: Record<
         imageAlt: 'SPADA platform preview',
     },
     zh: {
-        eyebrow: '什么是 SPADA？',
+        eyebrow: '什么是 SPADA?',
         title: '高级体育预测与分析系统',
         body: (
             <>
@@ -98,7 +98,7 @@ export default function About({ className = '' }: AboutProps): JSX.Element {
                             src={imageSrc}
                             alt={t.imageAlt}
                             loading="lazy"
-                            className="w-full ml-auto rounded-2xl ring-1 ring-white/10 shadow-2xl translate-y-1 md:translate-y-2"
+                            className="w-full ml-auto -mr-50 rounded-2xl ring-1 ring-white/10 shadow-2xl translate-y-1 md:translate-y-2 scale-125 md:scale-150 md:translate-x-10"
                         />
                         {/* Sombra base suave */}
                         <div className="pointer-events-none absolute -bottom-6 right-6 left-6 h-8 rounded-full blur-2xl opacity-40 bg-black" />
