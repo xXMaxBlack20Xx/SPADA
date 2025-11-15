@@ -1,33 +1,42 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
+
 import { UserModule } from './users/user.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
-    imports: [
-        ConfigModule.forRoot({
-            isGlobal: true,
-        }),
+  imports: [
+    // Loads .env and makes ConfigService available everywhere
+    ConfigModule.forRoot({ isGlobal: true }),
 
-        TypeOrmModule.forRoot({
-            type: 'postgres',
-            host: process.env.DATABASE_HOST,
-            port: parseInt(process.env.DATABASE_PORT!, 10),
-            username: process.env.DATABASE_USER,
-            password: process.env.DATABASE_PASSWORD,
-            database: process.env.DATABASE_NAME,
-            // entities: [],
-            autoLoadEntities: true,
-            synchronize: true, // Quitar si lo subimos en la nube
-        }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        type: 'postgres',
+        host: config.get<string>('POSTGRES_HOST'),
+        port: Number(config.get<string>('POSTGRES_PORT')),
+        username: config.get<string>('POSTGRES_USER'),
+        password: config.get<string>('POSTGRES_PASSWORD'),
+        database: config.get<string>('POSTGRES_DB'),
 
-        UserModule,
-        AuthModule,
-    ],
-    controllers: [AppController],
-    providers: [AppService],
+        autoLoadEntities: true,
+        // In dev we let TypeORM create tables; in prod you’ll run migrations
+        synchronize: process.env.NODE_ENV !== 'production',
+
+        ssl: {
+          rejectUnauthorized: false,   // Render needs this
+        },
+      }),
+    }),
+
+    UserModule,
+    AuthModule,
+  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
