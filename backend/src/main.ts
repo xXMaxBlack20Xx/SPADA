@@ -10,11 +10,20 @@ async function bootstrap() {
       // Just DTO properties
       whitelist: true,
       forbidNonWhitelisted: true,
+      
       // Payload -> DTO
       transform: true,
     }),
   );
 
+   // Enablnig CORS to  allow  request  from the frontend
+   // ToDO: dont leave origin as  true  once  we  go  live 
+app.enableCors({
+  origin: true, // allow any origin
+  credentials: true,
+});
+
+  
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
