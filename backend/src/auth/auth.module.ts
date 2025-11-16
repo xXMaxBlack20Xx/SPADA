@@ -7,7 +7,6 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { RefreshTokenGuard } from './guards/refresh-token.guard';
 
 @Module({
     imports: [
@@ -26,7 +25,7 @@ import { RefreshTokenGuard } from './guards/refresh-token.guard';
         }),
     ],
     controllers: [AuthController],
-    providers: [AuthService, JwtStrategy, JwtAuthGuard, RefreshTokenGuard],
-    exports: [AuthService, JwtAuthGuard, RefreshTokenGuard],
+    providers: [AuthService, JwtStrategy, JwtAuthGuard],
+    exports: [AuthService, JwtAuthGuard],
 })
 export class AuthModule {}

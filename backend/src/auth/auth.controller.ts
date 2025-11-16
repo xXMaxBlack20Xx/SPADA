@@ -4,7 +4,6 @@ import { SignupDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
-import { RefreshTokenGuard } from './guards/refresh-token.guard';
 
 type UserPayload = {
     userId: string;
@@ -41,7 +40,7 @@ export class AuthController {
     }
 
     @Post('refresh')
-    @UseGuards(RefreshTokenGuard)
+    @UseGuards(JwtAuthGuard)
     @HttpCode(HttpStatus.OK)
     refreshToken(@CurrentUser() user: UserPayload, @Body() body: { refreshToken: string }) {
         return this.authService.refreshToken(user.userId, body.refreshToken);
