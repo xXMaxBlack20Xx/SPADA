@@ -1,5 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useLanguage } from "../../context/LanguageContext";
+import { useState } from "react";
+import { login } from "../../api/auth";
 
 type Lang = "es" | "en" | "zh";
 const i18n: Record<
@@ -14,6 +16,8 @@ const i18n: Record<
     forgot: string;
     signup: string;
     back: string;
+    error: string;
+    loading: string;
   }
 > = {
   es: {
@@ -26,6 +30,8 @@ const i18n: Record<
     forgot: "¿Olvidaste tu contraseña?",
     signup: "Crear cuenta",
     back: "Volver al inicio",
+    error: "Error al iniciar sesión",
+    loading: "Iniciando sesión...",
   },
   en: {
     headline: "Welcome back",
@@ -37,6 +43,8 @@ const i18n: Record<
     forgot: "Forgot your password?",
     signup: "Create account",
     back: "Back to home",
+    error: "Error signing in",
+    loading: "Signing in...",
   },
   zh: {
     headline: "欢迎回来",
@@ -48,6 +56,8 @@ const i18n: Record<
     forgot: "忘记密码？",
     signup: "创建账户",
     back: "返回首页",
+    error: "登录失败",
+    loading: "登录中...",
   },
 };
 
@@ -55,6 +65,27 @@ export default function Login() {
   const { lang } = useLanguage();
   const t = i18n[lang];
   const navigate = useNavigate();
+  
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setIsLoading(true);
+
+    try {
+      await login(email, password);
+      // Redirect to dashboard on successful login
+      navigate("/dashboard");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t.error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <section
@@ -163,29 +194,41 @@ export default function Login() {
 
         {/* Form */}
         <h2 className="sr-only">Login form</h2>
-        <form className="grid gap-5" aria-describedby="form-hint">
+        <form className="grid gap-5" onSubmit={handleSubmit}>
+          {/* Error message */}
+          {error && (
+            <div className="rounded-xl bg-red-500/20 border border-red-500/50 px-4 py-3 text-sm text-red-200">
+              {error}
+            </div>
+          )}
+
           {/* Identifier */}
           <div className="grid gap-2">
             <label
-              htmlFor="identifier"
+              htmlFor="email"
               className="text-sm text-[color:color-mix(in_oklab,var(--color-text)_85%,var(--color-text-muted))]"
             >
-              Correo o usuario
+              Correo electrónico
             </label>
             <div className="relative">
               <input
-                id="identifier"
-                name="identifier"
-                type="text"
+                id="email"
+                name="email"
+                type="email"
                 placeholder="tu@correo.com"
-                autoComplete="username"
+                autoComplete="email"
                 inputMode="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={isLoading}
+                required
                 className="w-full rounded-xl pl-11 pr-4 py-3.5 outline-none
                            border bg-[color:color-mix(in_oklab,var(--color-surface)_78%,transparent)]
                            border-[color:color-mix(in_oklab,var(--color-text-muted)_30%,transparent)]
                            placeholder:text-[var(--color-text-muted)]
                            focus-visible:ring-4 focus-visible:ring-[color:color-mix(in_oklab,var(--color-secondary)_25%,transparent)]
                            focus-visible:border-[color:color-mix(in_oklab,var(--color-secondary)_70%,transparent)]
+                           disabled:opacity-50 disabled:cursor-not-allowed
                            transition"
               />
               <span
@@ -229,12 +272,17 @@ export default function Login() {
                 type="password"
                 placeholder="••••••••"
                 autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={isLoading}
+                required
                 className="w-full rounded-xl pl-11 pr-4 py-3.5 outline-none
                            border bg-[color:color-mix(in_oklab,var(--color-surface)_78%,transparent)]
                            border-[color:color-mix(in_oklab,var(--color-text-muted)_30%,transparent)]
                            placeholder:text-[var(--color-text-muted)]
                            focus-visible:ring-4 focus-visible:ring-[color:color-mix(in_oklab,var(--color-secondary)_25%,transparent)]
                            focus-visible:border-[color:color-mix(in_oklab,var(--color-secondary)_70%,transparent)]
+                           disabled:opacity-50 disabled:cursor-not-allowed
                            transition"
               />
               <span
@@ -264,15 +312,17 @@ export default function Login() {
 
           {/* CTA principal */}
           <button
-            type="button"
+            type="submit"
+            disabled={isLoading}
             className="rounded-xl px-4 py-3.5 font-bold w-full
                        bg-[var(--color-primary)] text-[#1A1D21]
                        shadow-[0_14px_28px_-12px_color-mix(in_oklab,var(--color-primary)_70%,transparent)]
                        hover:shadow-[0_18px_36px_-12px_color-mix(in_oklab,var(--color-primary)_80%,transparent)]
                        hover:ring-4 hover:ring-[color:color-mix(in_oklab,var(--color-primary)_22%,transparent)]
+                       disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none
                        transition"
           >
-            {t.cta}
+            {isLoading ? t.loading : t.cta}
           </button>
 
           {/* Separador “o” */}

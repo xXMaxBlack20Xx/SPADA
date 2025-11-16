@@ -133,7 +133,7 @@ export default function Register() {
     try {
       // Call backend API
       await signup({ name, email, password: pass });
-      navigate("/login"); // Redirect to login page
+      navigate("/dashboard"); // Redirect to dashboard (user is now authenticated)
     } catch (err: any) {
       setError(err.message || "Something went wrong");
     } finally {

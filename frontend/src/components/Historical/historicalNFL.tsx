@@ -8,7 +8,7 @@ import {
 import { db } from "../../api/firebase";
 import type { GameData } from "../../types/nflPredictionsInterface";
 
-const COLLECTION_NAME = "predictions"; // ← cámbialo si tu colección se llama distinto
+const COLLECTION_NAME = "NFL_PREDICTIONS"; // ← cámbialo si tu colección se llama distinto
 
 type SortKey = "date_desc" | "prob_desc";
 
