@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 
 import { UserModule } from './users/user.module';
 import { AuthModule } from './auth/auth.module';
+import { PicksModule } from './picks/picks.module';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { AuthModule } from './auth/auth.module';
         database: config.get<string>('POSTGRES_DB'),
 
         autoLoadEntities: true,
-        // In dev we let TypeORM create tables; in prod you’ll run migrations
+        // In dev we let TypeORM create tables; in prod you'll run migrations
         synchronize: process.env.NODE_ENV !== 'production',
 
         ssl: {
@@ -35,6 +36,7 @@ import { AuthModule } from './auth/auth.module';
 
     UserModule,
     AuthModule,
+    PicksModule,
   ],
   controllers: [AppController],
   providers: [AppService],
