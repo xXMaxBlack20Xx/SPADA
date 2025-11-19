@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAccessToken } from "../../api/auth";
+import { getAccessToken } from "../../api/auth/auth";
 import GameList from "./predNFL";
 
 export default function PredictionsPage() {

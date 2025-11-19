@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { useState } from 'react';
-import { login } from '../../api/auth';
+import { login } from '../../api/auth/auth';
 
 type Lang = 'es' | 'en' | 'zh';
 const i18n: Record<
@@ -86,8 +86,7 @@ export default function Login() {
 
         try {
             await login(email, password);
-            // Redirect to dashboard on successful login
-            navigate('/mainHome');
+            navigate('/Dashboard');
         } catch (err) {
             setError(err instanceof Error ? err.message : t.error);
         } finally {

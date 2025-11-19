@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
-import { signup } from '../../api/auth';
+import { signup } from '../../api/auth/auth';
 
 type Lang = 'es' | 'en' | 'zh';
 
@@ -131,7 +131,7 @@ export default function Register() {
 
         try {
             await signup({ name, email, password: pass });
-            navigate('/mainHome');
+            navigate('/Dashboard');
         } catch (err: any) {
             setError(err.message || 'Something went wrong');
         } finally {
