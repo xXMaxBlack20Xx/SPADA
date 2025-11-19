@@ -10,35 +10,37 @@ import { AuthModule } from './auth/auth.module';
 import { PicksModule } from './picks/picks.module';
 
 @Module({
-  imports: [
-    // Loads .env and makes ConfigService available everywhere
-    ConfigModule.forRoot({ isGlobal: true }),
+    imports: [
+        // Loads .env and makes ConfigService available everywhere
+        ConfigModule.forRoot({
+            isGlobal: true,
+            envFilePath: ['../.env'],
+        }),
 
-    TypeOrmModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        type: 'postgres',
-        host: config.get<string>('POSTGRES_HOST'),
-        port: Number(config.get<string>('POSTGRES_PORT')),
-        username: config.get<string>('POSTGRES_USER'),
-        password: config.get<string>('POSTGRES_PASSWORD'),
-        database: config.get<string>('POSTGRES_DB'),
+        TypeOrmModule.forRootAsync({
+            inject: [ConfigService],
+            useFactory: (config: ConfigService) => ({
+                type: 'postgres',
+                host: config.get<string>('POSTGRES_HOST'),
+                port: Number(config.get<string>('POSTGRES_PORT')),
+                username: config.get<string>('POSTGRES_USER'),
+                password: config.get<string>('POSTGRES_PASSWORD'),
+                database: config.get<string>('POSTGRES_DB'),
 
-        autoLoadEntities: true,
-        // In dev we let TypeORM create tables; in prod you'll run migrations
-        synchronize: process.env.NODE_ENV !== 'production',
+                autoLoadEntities: true,
+                synchronize: process.env.NODE_ENV !== 'production',
 
-        ssl: {
-          rejectUnauthorized: false,   // Render needs this
-        },
-      }),
-    }),
+                ssl: {
+                    rejectUnauthorized: false, // Render needs this
+                },
+            }),
+        }),
 
-    UserModule,
-    AuthModule,
-    PicksModule,
-  ],
-  controllers: [AppController],
-  providers: [AppService],
+        UserModule,
+        AuthModule,
+        PicksModule,
+    ],
+    controllers: [AppController],
+    providers: [AppService],
 })
 export class AppModule {}

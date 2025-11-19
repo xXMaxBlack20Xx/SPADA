@@ -16,7 +16,6 @@ services:
     env_file:
       - .env
     environment:
-      # keep these for clarity; values will be read from `.env`
       DATABASE_HOST: db
       DATABASE_PORT: ${POSTGRES_PORT}
       DATABASE_USER: ${POSTGRES_USER}
@@ -43,7 +42,6 @@ services:
     restart: unless-stopped
     env_file:
       - .env
-    # optionally a simple healthcheck hitting the static server
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:80/ || exit 1"]
       interval: 30s

@@ -6,7 +6,6 @@ import SpadaMain from './components/main/mainPage';
 import Login from './components/SignIn/Login';
 import Register from './components/SignUp/Register';
 import MainHome from './components/home/mainHome';
-import Dashboard from './components/dashboard/Dashboard';
 import PredictionsPage from './components/Predictions/PredictionsPage';
 import NotFound from './components/Error/NotFound';
 import Footer from './components/main/Footer';
@@ -24,7 +23,6 @@ function App() {
                 <Route path="/" element={<SpadaMain />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Register />} />
-                <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/predictions" element={<PredictionsPage />} />
                 <Route path="/mainHome" element={<MainHome />} />
                 <Route path="*" element={<NotFound />} />
