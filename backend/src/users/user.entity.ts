@@ -1,10 +1,14 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Unique, UpdateDateColumn, OneToMany } from "typeorm";
+import { Pick } from "../picks/pick.entity";
 
 @Entity('users')
 @Unique(['email'])
 export class User {
     @PrimaryGeneratedColumn('uuid')
     id: string;
+
+    @Column({ nullable: true })
+    name?: string;
 
     @Column()
     email: string;
@@ -20,6 +24,9 @@ export class User {
 
     @UpdateDateColumn()
     updatedAt: Date;
+
+    @OneToMany(() => Pick, (pick) => pick.user, { cascade: true })
+    picks: Pick[];
 
     // ideas
     // Estado de cuenta, rol y normalizazion
