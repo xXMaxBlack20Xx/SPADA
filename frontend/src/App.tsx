@@ -9,7 +9,7 @@ import Register from './components/SignUp/Register';
 import NotFound from './components/Error/NotFound';
 import Footer from './components/main/Footer';
 import Dashboard from './components/layouts/Dashboard';
-import Predictions from './components/dashboard/Predictions';
+import Predictions from './components/dashboard/Predictions/PredictionsNBA';
 import './App.css';
 
 const ProtectedRoute = ({ children }: { children: ReactNode }) => {
@@ -17,7 +17,7 @@ const ProtectedRoute = ({ children }: { children: ReactNode }) => {
     if (!token) {
         return <Navigate to="/login" replace />;
     }
-    return children;
+    return <>{children}</>;
 };
 
 const PublicLayout = () => {
@@ -45,9 +45,16 @@ function App() {
                 <Route path="/signup" element={<Register />} />
                 <Route path="*" element={<NotFound />} />
 
-                {/* DASHBOARD ROUTES */}
-                <Route path="/dashboard" element={<Dashboard />}>
-                    {/* This ensures /dashboard redirects to /dashboard/predict by default, OR you can make a summary page */}
+                {/* DASHBOARD ROUTES - NOW PROTECTED */}
+                <Route
+                    path="/dashboard"
+                    element={
+                        <ProtectedRoute>
+                            <Dashboard />
+                        </ProtectedRoute>
+                    }
+                >
+                    {/* This ensures /dashboard redirects to /dashboard/predict by default */}
                     <Route index element={<Navigate to="/dashboard/predict" replace />} />
 
                     {/* The new component */}
@@ -58,14 +65,20 @@ function App() {
                         path="calendar"
                         element={<h1 className="text-white">Calendar Page</h1>}
                     />
-                    <Route path="users" element={<h1 className="text-white">Users Page</h1>} />
+                    <Route
+                        path="community"
+                        element={<h1 className="text-white">Community Page</h1>}
+                    />
+                    <Route
+                        path="binnacle"
+                        element={<h1 className="text-white">Binnacle Page</h1>}
+                    />
                     <Route path="stats" element={<h1 className="text-white">Stats Page</h1>} />
                     <Route
                         path="settings"
                         element={<h1 className="text-white">Settings Page</h1>}
                     />
                 </Route>
-
             </Routes>
         </LanguageProvider>
     );

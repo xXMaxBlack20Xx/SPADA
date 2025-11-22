@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Unique, UpdateDateColumn, OneToMany } from "typeorm";
-import { Pick } from "../picks/pick.entity";
+import { Pick } from "../picks/entities/pick.entity";
 
 @Entity('users')
 @Unique(['email'])

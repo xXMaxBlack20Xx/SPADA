@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { useState } from 'react';
 import { login } from '../../api/auth/auth';
+import background from '../../assets/img/sign/background.webp';
 
 type Lang = 'es' | 'en' | 'zh';
 const i18n: Record<
@@ -88,7 +89,7 @@ export default function Login() {
             await login(email, password);
             navigate('/Dashboard');
         } catch (err) {
-            setError(err instanceof Error ? err.message : t.error);
+            setError('Error al iniciar sesión / Login error / 登录错误');
         } finally {
             setIsLoading(false);
         }
@@ -99,10 +100,11 @@ export default function Login() {
             {/* ===== Background Image ===== */}
             <div className="absolute inset-0 z-0">
                 <img
-                    src="/src/assets/img/sign/background.webp"
+                    src={background}
                     alt="Background"
                     className="h-full w-full object-cover"
                 />
+
                 <div className="absolute inset-0 bg-linear-to-b from-[#0B0A17]/70 via-[#121024]/80 to-[#1A132B]/90 backdrop-blur-[2px]" />
             </div>
 

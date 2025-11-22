@@ -1,7 +1,9 @@
 import { useState, useEffect, useContext } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { LanguageContext } from '../../context/LanguageContext';
-import { fetchUserProfile } from '../../api/userService';
+import { fetchUserProfile } from '../../api/auth/userService';
+import spadaLogo from '../../assets/logos/spada.png';
+
 import {
     LuLayoutGrid,
     LuCalendar,
@@ -23,7 +25,7 @@ interface LanguageContextType {
 const navItems = [
     { label: 'Predicciónes', path: '/dashboard/predict', icon: LuLayoutGrid },
     { label: 'Calendario', path: '/dashboard/calendar', icon: LuCalendar },
-    { label: 'Comunidad', path: '/dashboard/users', icon: LuUsers },
+    { label: 'Comunidad', path: '/dashboard/community', icon: LuUsers },
     { label: 'Bitacora', path: '/dashboard/binnacle', icon: LuClipboardList },
     { label: 'Estadísticas', path: '/dashboard/stats', icon: LuDatabase },
     { label: 'Settings', path: '/dashboard/settings', icon: LuSettings },
@@ -89,7 +91,7 @@ function Sidebar() {
             <div className="flex h-16 items-center border-b border-white/10 px-3">
                 <div className="flex items-center gap-2 font-bold text-xl tracking-tight text-white">
                     <img
-                        src="/src/assets/logo/spada.png"
+                        src={spadaLogo}
                         alt="SPADA Logo"
                         className="h-8 w-8 object-contain rounded-lg"
                         onError={(e) => {
