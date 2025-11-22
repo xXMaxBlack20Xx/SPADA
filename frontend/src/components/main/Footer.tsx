@@ -1,6 +1,6 @@
 // Footer del Main Page
 import { useLanguage } from "../../context/LanguageContext";
-import Logo from "@/assets/logo/spada.png";
+import Logo from "@/assets/logos/spada.png";
 
 // Context Global de traducciones
 const i18n = {

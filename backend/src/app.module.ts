@@ -8,6 +8,7 @@ import { AppService } from './app.service';
 import { UserModule } from './users/user.module';
 import { AuthModule } from './auth/auth.module';
 import { PicksModule } from './picks/picks.module';
+import { NbaPredictionsModule } from './nba-predictions/nba-predictions.module';
 
 @Module({
     imports: [
@@ -28,7 +29,8 @@ import { PicksModule } from './picks/picks.module';
                 database: config.get<string>('POSTGRES_DB'),
 
                 autoLoadEntities: true,
-                synchronize: process.env.NODE_ENV !== 'production',
+                synchronize: false, // Se agregara esto por mientras por que no tengo el derecho de super usuario en render
+                // synchronize: process.env.NODE_ENV !== 'production',
 
                 ssl: {
                     rejectUnauthorized: false, // Render needs this
@@ -39,6 +41,7 @@ import { PicksModule } from './picks/picks.module';
         UserModule,
         AuthModule,
         PicksModule,
+        NbaPredictionsModule,
     ],
     controllers: [AppController],
     providers: [AppService],

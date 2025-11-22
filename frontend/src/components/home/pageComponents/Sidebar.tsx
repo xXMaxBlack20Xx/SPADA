@@ -45,7 +45,7 @@ export default function Sidebar() {
             {/* User Profile Snippet (Bottom) */}
             <div className="border-t border-white/10 p-4">
                 <div className="flex items-center gap-3 rounded-xl bg-white/5 p-3 hover:bg-white/10 transition cursor-pointer">
-                    <div className="h-9 w-9 rounded-full bg-gradient-to-tr from-blue-500 to-teal-400" />
+                    <div className="h-9 w-9 rounded-full bg-linear-to-tr from-blue-500 to-teal-400" />
                     <div className="flex-1 overflow-hidden">
                         <p className="truncate text-sm font-medium text-white">Demo Admin</p>
                         <p className="truncate text-xs text-gray-400">admin@render.com</p>
@@ -56,7 +56,6 @@ export default function Sidebar() {
     );
 }
 
-// Simple Icon wrapper to avoid external dependencies for this preview
 function Icon({ name, isActive }: { name: string; isActive: boolean }) {
     const colorClass = isActive ? 'text-indigo-400' : 'text-gray-500 group-hover:text-gray-300';
 

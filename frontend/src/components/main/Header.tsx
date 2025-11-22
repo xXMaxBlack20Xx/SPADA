@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
-import Logo from '@/assets/logo/spada.png';
+import Logo from '@/assets/logos/spada.png';
 
 // Se usa el Contexto Global de idioma (LanguageContext)
 type Lang = 'es' | 'en' | 'zh';

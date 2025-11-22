@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Pick } from './pick.entity';
+import { Pick } from './entities/pick.entity';
 
 @Injectable()
 export class PicksService {
@@ -11,90 +11,44 @@ export class PicksService {
     ) {}
 
     /**
-     * Save a single pick for a user
+     * The Core Logic: Toggle a pick (Star/Unstar)
      */
-    async savePick(userId: string, pickId: string, pickData?: Record<string, any>): Promise<Pick> {
-        const pick = this.picksRepository.create({
-            userId,
-            pickId,
-            pickData,
+    async togglePick(userId: string, gameId: string, predictionData: any) {
+        // 1. Check if the pick already exists
+        const existingPick = await this.picksRepository.findOne({
+            where: { userId, pickId: gameId },
         });
-        return this.picksRepository.save(pick);
-    }
 
-    /**
-     * Save multiple picks for a user at once
-     */
-    async saveMultiplePicks(
-        userId: string,
-        picks: Array<{ pickId: string; pickData?: Record<string, any> }>,
-    ): Promise<Pick[]> {
-        const pickEntities = picks.map((pick) =>
-            this.picksRepository.create({
+        if (existingPick) {
+            // 2. If exists -> Remove it (Unstar)
+            await this.picksRepository.remove(existingPick);
+            return { status: 'removed', gameId };
+        } else {
+            // 3. If not exists -> Create it (Star)
+            const newPick = this.picksRepository.create({
                 userId,
-                pickId: pick.pickId,
-                pickData: pick.pickData,
-            }),
-        );
-        return this.picksRepository.save(pickEntities);
+                pickId: gameId,
+                pickData: predictionData,
+            });
+            const saved = await this.picksRepository.save(newPick);
+            return { status: 'added', pick: saved };
+        }
     }
 
     /**
-     * Get all picks for a user
+     * Get all picks for the current user
      */
     async getUserPicks(userId: string): Promise<Pick[]> {
         return this.picksRepository.find({
             where: { userId },
-            order: { createdAt: 'DESC' },
+            order: { createdAt: 'DESC' }, // Show newest picks first
         });
     }
 
     /**
-     * Get a specific pick by ID
+     * Get a specific pick details
      */
-    async getPickById(pickId: string): Promise<Pick | null> {
-        return this.picksRepository.findOne({
-            where: { id: pickId },
-        });
-    }
-
-    /**
-     * Get picks by pickId (useful for finding all users who made a specific pick)
-     */
-    async getPicksByPickId(pickId: string): Promise<Pick[]> {
-        return this.picksRepository.find({
-            where: { pickId },
-        });
-    }
-
-    /**
-     * Delete a pick
-     */
-    async deletePick(id: string): Promise<boolean> {
-        const result = await this.picksRepository.delete(id);
-        return (result.affected ?? 0) > 0;
-    }
-
-    /**
-     * Delete all picks for a user
-     */
-    async deleteUserPicks(userId: string): Promise<number> {
-        const result = await this.picksRepository.delete({ userId });
-        return result.affected ?? 0;
-    }
-
-    /**
-     * Update pick data
-     */
-    async updatePick(id: string, pickData: Record<string, any>): Promise<Pick | null> {
-        await this.picksRepository.update(id, { pickData });
-        return this.getPickById(id);
-    }
-
-    /**
-     * Count picks for a user
-     */
-    async countUserPicks(userId: string): Promise<number> {
-        return this.picksRepository.count({ where: { userId } });
+    async getPickById(id: string): Promise<Pick | null> {
+        return this.picksRepository.findOne({ where: { id } });
     }
 }

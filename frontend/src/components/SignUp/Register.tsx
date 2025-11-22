@@ -1,7 +1,8 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
-import { signup } from '../../api/auth';
+import { signup } from '../../api/auth/auth';
+import background from '../../assets/img/sign/background.webp'
 
 type Lang = 'es' | 'en' | 'zh';
 
@@ -131,7 +132,7 @@ export default function Register() {
 
         try {
             await signup({ name, email, password: pass });
-            navigate('/mainHome');
+            navigate('/Dashboard');
         } catch (err: any) {
             setError(err.message || 'Something went wrong');
         } finally {
@@ -155,10 +156,11 @@ export default function Register() {
             {/* ===== Background Image ===== */}
             <div className="absolute inset-0 z-0">
                 <img
-                    src="/src/assets/img/sign/background.webp"
+                    src={background}
                     alt="Background"
                     className="h-full w-full object-cover opacity-50"
                 />
+                
                 <div className="absolute inset-0 bg-linear-to-b from-[#0B0A17]/70 via-[#121024]/80 to-[#1A132B]/90 backdrop-blur-[2px]" />
             </div>
 

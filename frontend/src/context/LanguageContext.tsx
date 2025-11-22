@@ -7,7 +7,7 @@ type Ctx = {
     setLang: (l: Lang) => void;
 };
 
-const LanguageContext = createContext<Ctx | null>(null);
+export const LanguageContext = createContext<Ctx | null>(null);
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
     const [lang, setLang] = useState<Lang>('es');
