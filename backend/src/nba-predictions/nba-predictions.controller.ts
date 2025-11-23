@@ -3,7 +3,7 @@ import { NbaPredictionsService } from './nba-predictions.service';
 // To Do: Yepis agregar validaciones en el back para que tambien use lo de JWT
 // import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
-@Controller('nba-predictions')
+@Controller('api/nba-predictions')
 export class NbaPredictionsController {
   constructor(private readonly nbaPredictionsService: NbaPredictionsService) {}
 

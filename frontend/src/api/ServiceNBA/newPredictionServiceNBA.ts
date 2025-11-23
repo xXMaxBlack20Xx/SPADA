@@ -1,5 +1,5 @@
 import type { NBAPrediction } from '../../types/nbaPredictionsInterface';
-import { toAbbrev } from "../../lib/NBA/nbaTeamMap";
+import { toAbbrev } from '../../lib/NBA/nbaTeamMap';
 
 export const fetchNBAPredictions = async (): Promise<NBAPrediction[]> => {
     let token = localStorage.getItem('token');
@@ -18,9 +18,9 @@ export const fetchNBAPredictions = async (): Promise<NBAPrediction[]> => {
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
     try {
-        console.log('Fetching NBA predictions from:', `${API_URL}/nba-predictions`);
+        console.log('Fetching NBA predictions from:', `${API_URL}/api/nba-predictions`);
 
-        const response = await fetch(`${API_URL}/nba-predictions`, {
+        const response = await fetch(`${API_URL}/api/nba-predictions`, {
             method: 'GET',
             headers: {
                 ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -42,7 +42,7 @@ export const fetchNBAPredictions = async (): Promise<NBAPrediction[]> => {
                       game_id: String(item.game_id),
                       game_date_home: String(item.game_date_home),
 
-                      // 🔥 Convert full name → Abbreviation
+                      // Convert full name → Abbreviation
                       team_name_home: toAbbrev(item.team_name_home),
                       team_name_away: toAbbrev(item.team_name_away),
                       predicted_winner: toAbbrev(item.predicted_winner),

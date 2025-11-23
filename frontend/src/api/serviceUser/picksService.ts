@@ -1,4 +1,4 @@
-import { getAccessToken } from '../auth/auth';
+import { getAccessToken } from '../auth/authApi';
 const API_URL = '/api/picks';
 
 export const togglePickPrediction = async (gameId: string, data: any) => {

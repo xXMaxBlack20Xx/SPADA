@@ -9,6 +9,8 @@ import { UserModule } from './users/user.module';
 import { AuthModule } from './auth/auth.module';
 import { PicksModule } from './picks/picks.module';
 import { NbaPredictionsModule } from './nba-predictions/nba-predictions.module';
+import { CalendarModule } from './calendar/calendar.module';
+import { NflPredictionsModule } from './nfl-predictions/nfl-predictions.module';
 
 @Module({
     imports: [
@@ -29,8 +31,13 @@ import { NbaPredictionsModule } from './nba-predictions/nba-predictions.module';
                 database: config.get<string>('POSTGRES_DB'),
 
                 autoLoadEntities: true,
-                synchronize: false, // Se agregara esto por mientras por que no tengo el derecho de super usuario en render
-                // synchronize: process.env.NODE_ENV !== 'production',
+                
+                // Cuando se tiene la app en produccion, no se debe usar synchronize: true
+                synchronize: false,
+
+                // Ejecuta las migraciones automaticamente al iniciar la app
+                // Que es util para entornos como Render donde no se tiene acceso
+                migrationsRun: true,
 
                 ssl: {
                     rejectUnauthorized: false, // Render needs this
@@ -41,7 +48,9 @@ import { NbaPredictionsModule } from './nba-predictions/nba-predictions.module';
         UserModule,
         AuthModule,
         PicksModule,
+        CalendarModule,
         NbaPredictionsModule,
+        NflPredictionsModule,
     ],
     controllers: [AppController],
     providers: [AppService],

@@ -1,8 +1,8 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
-import { signup } from '../../api/auth/auth';
-import background from '../../assets/img/sign/background.webp'
+import { signup } from '../../api/auth/authApi';
+import background from '../../assets/img/sign/background.webp';
 
 type Lang = 'es' | 'en' | 'zh';
 
@@ -18,11 +18,11 @@ const i18n: Record<Lang, any> = {
         signin: 'Inicia sesión',
         back: 'Volver al inicio',
         labels: {
-            name: 'Nombre completo',
+            name: 'Nombre de usuario',
             email: 'Correo electrónico',
             password: 'Contraseña',
             confirm: 'Confirmar contraseña',
-            placeholderName: 'Tu nombre y apellidos',
+            placeholderName: 'usuario',
             placeholderEmail: 'tu@correo.com',
             placeholderPass: '••••••••',
         },
@@ -44,11 +44,11 @@ const i18n: Record<Lang, any> = {
         signin: 'Sign in',
         back: 'Back to home',
         labels: {
-            name: 'Full name',
+            name: 'User name',
             email: 'Email',
             password: 'Password',
             confirm: 'Confirm password',
-            placeholderName: 'Your first and last name',
+            placeholderName: 'user',
             placeholderEmail: 'you@example.com',
             placeholderPass: '••••••••',
         },
@@ -70,11 +70,11 @@ const i18n: Record<Lang, any> = {
         signin: '登录',
         back: '返回首页',
         labels: {
-            name: '姓名',
+            name: '用户名',
             email: '邮箱',
             password: '密码',
             confirm: '确认密码',
-            placeholderName: '你的姓名',
+            placeholderName: '用户',
             placeholderEmail: 'you@example.com',
             placeholderPass: '••••••••',
         },
@@ -102,7 +102,6 @@ export default function Register() {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
-    // Simplified validation for demo purposes
     const canSubmit =
         name.trim().length > 1 &&
         /\S+@\S+\.\S+/.test(email) &&
@@ -133,8 +132,9 @@ export default function Register() {
         try {
             await signup({ name, email, password: pass });
             navigate('/Dashboard');
+            return;
         } catch (err: any) {
-            setError(err.message || 'Something went wrong');
+            setError(err?.message || 'Error al iniciar sesión / Login error / 登录错误');
         } finally {
             setLoading(false);
         }
@@ -160,7 +160,7 @@ export default function Register() {
                     alt="Background"
                     className="h-full w-full object-cover opacity-50"
                 />
-                
+
                 <div className="absolute inset-0 bg-linear-to-b from-[#0B0A17]/70 via-[#121024]/80 to-[#1A132B]/90 backdrop-blur-[2px]" />
             </div>
 
