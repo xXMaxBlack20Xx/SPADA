@@ -15,6 +15,7 @@ import {
     LuBell,
     LuGlobe,
     LuClipboardList,
+    LuChevronDown,
 } from 'react-icons/lu';
 
 interface LanguageContextType {
@@ -22,12 +23,27 @@ interface LanguageContextType {
     changeLanguage: (lang: string) => void;
 }
 
-const navItems = [
-    { label: 'Predicciónes', path: '/dashboard/predict', icon: LuLayoutGrid },
-    { label: 'Calendario', path: '/dashboard/calendar', icon: LuCalendar },
-    { label: 'Comunidad', path: '/dashboard/community', icon: LuUsers },
-    { label: 'Bitacora', path: '/dashboard/binnacle', icon: LuClipboardList },
-    { label: 'Estadísticas', path: '/dashboard/stats', icon: LuDatabase },
+type NavItem = {
+    label: string;
+    path?: string;
+    icon: React.ComponentType<{ size?: number; className?: string }>;
+    children?: { label: string; path: string }[];
+};
+
+// 👇 UPDATED navItems
+const navItems: NavItem[] = [
+    {
+        label: 'Predictions',
+        icon: LuLayoutGrid,
+        children: [
+            { label: 'NBA', path: '/dashboard/predictNBA' },
+            { label: 'NFL', path: '/dashboard/predictNFL' },
+        ],
+    },
+    { label: 'Calender', path: '/dashboard/calendar', icon: LuCalendar },
+    { label: 'Community', path: '/dashboard/community', icon: LuUsers },
+    { label: 'Binnacle', path: '/dashboard/binnacle', icon: LuClipboardList },
+    { label: 'Stats', path: '/dashboard/stats', icon: LuDatabase },
     { label: 'Settings', path: '/dashboard/settings', icon: LuSettings },
 ];
 
@@ -35,6 +51,7 @@ function Sidebar() {
     const location = useLocation();
     const navigate = useNavigate();
     const [user, setUser] = useState({ name: 'Guest', email: 'user@spada.com' });
+    const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
     useEffect(() => {
         const loadUser = async () => {
@@ -63,7 +80,7 @@ function Sidebar() {
 
                     if (apiUser) {
                         const normalizedUser = {
-                            name: apiUser.name || 'User',
+                            name: apiUser.username || 'User',
                             email: apiUser.email || 'user@spada.com',
                         };
 
@@ -102,22 +119,99 @@ function Sidebar() {
                     <span>SPADA</span>
                 </div>
             </div>
-
             <nav className="flex-1 space-y-1 px-3 py-4">
                 {navItems.map((item) => {
-                    const isActive = location.pathname === item.path;
                     const Icon = item.icon;
 
+                    const hasChildren = !!item.children && item.children.length > 0;
+
+                    // active if the current path matches this item or one of its children
+                    const isChildActive =
+                        hasChildren &&
+                        item.children!.some((child) => location.pathname.startsWith(child.path));
+
+                    const isActive = item.path
+                        ? location.pathname.startsWith(item.path)
+                        : !!isChildActive;
+
+                    if (hasChildren) {
+                        // Parent item with dropdown
+                        const isOpen = openDropdown === item.label;
+
+                        return (
+                            <div key={item.label} className="space-y-1">
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        setOpenDropdown((prev) =>
+                                            prev === item.label ? null : item.label,
+                                        )
+                                    }
+                                    className={`group flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium transition-all
+                            ${
+                                isActive
+                                    ? 'bg-white/10 text-white shadow-[0_1px_10px_rgba(255,255,255,0.1)]'
+                                    : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                            }`}
+                                >
+                                    <span className="flex items-center gap-3">
+                                        <Icon
+                                            size={20}
+                                            className={`${
+                                                isActive
+                                                    ? 'text-indigo-400'
+                                                    : 'text-gray-500 group-hover:text-gray-300'
+                                            }`}
+                                        />
+                                        {item.label}
+                                    </span>
+                                    <LuChevronDown
+                                        size={16}
+                                        className={`transition-transform ${
+                                            isOpen ? 'rotate-180' : ''
+                                        }`}
+                                    />
+                                </button>
+
+                                {/* Children links */}
+                                {isOpen && (
+                                    <div className="ml-8 space-y-1">
+                                        {item.children!.map((child) => {
+                                            const childActive = location.pathname.startsWith(
+                                                child.path,
+                                            );
+                                            return (
+                                                <Link
+                                                    key={child.path}
+                                                    to={child.path}
+                                                    className={`flex items-center rounded-lg px-3 py-2 text-xs font-medium transition-all
+                                            ${
+                                                childActive
+                                                    ? 'bg-white/10 text-white'
+                                                    : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                                            }`}
+                                                >
+                                                    {child.label}
+                                                </Link>
+                                            );
+                                        })}
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    }
+
+                    // Normal single link
                     return (
                         <Link
                             key={item.path}
-                            to={item.path}
+                            to={item.path!}
                             className={`group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all
-                                ${
-                                    isActive
-                                        ? 'bg-white/10 text-white shadow-[0_1px_10px_rgba(255,255,255,0.1)]'
-                                        : 'text-gray-400 hover:bg-white/5 hover:text-white'
-                                }`}
+                    ${
+                        isActive
+                            ? 'bg-white/10 text-white shadow-[0_1px_10px_rgba(255,255,255,0.1)]'
+                            : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                    }`}
                         >
                             <Icon
                                 size={20}

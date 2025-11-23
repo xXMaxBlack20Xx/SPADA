@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { useState } from 'react';
-import { login } from '../../api/auth/auth';
+import { login } from '../../api/auth/authApi';
 import background from '../../assets/img/sign/background.webp';
 
 type Lang = 'es' | 'en' | 'zh';
@@ -88,8 +88,9 @@ export default function Login() {
         try {
             await login(email, password);
             navigate('/Dashboard');
-        } catch (err) {
-            setError('Error al iniciar sesión / Login error / 登录错误');
+            return;
+        } catch (err: any) {
+            setError(err.message || 'Error al iniciar sesión / Login error / 登录错误');
         } finally {
             setIsLoading(false);
         }
@@ -99,11 +100,7 @@ export default function Login() {
         <section className="relative isolate min-h-screen grid place-items-center overflow-hidden bg-linear-to-b from-[#0B0A17] via-[#121024] to-[#1A132B] text-(--color-text) p-6 md:p-10">
             {/* ===== Background Image ===== */}
             <div className="absolute inset-0 z-0">
-                <img
-                    src={background}
-                    alt="Background"
-                    className="h-full w-full object-cover"
-                />
+                <img src={background} alt="Background" className="h-full w-full object-cover" />
 
                 <div className="absolute inset-0 bg-linear-to-b from-[#0B0A17]/70 via-[#121024]/80 to-[#1A132B]/90 backdrop-blur-[2px]" />
             </div>

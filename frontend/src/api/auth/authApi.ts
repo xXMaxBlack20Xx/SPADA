@@ -2,16 +2,18 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 const TOKEN_STORAGE_KEY = 'auth_tokens';
 
-interface AuthTokens {
+export interface AuthTokens {
     accessToken: string;
     refreshToken: string;
 }
 
-interface SignupPayload {
+export interface SignupPayload {
     email: string;
     password: string;
     name?: string;
 }
+
+// ========== TOKEN HELPERS ==========
 
 // Store tokens in localStorage
 export function setTokens(tokens: AuthTokens): void {
@@ -21,7 +23,7 @@ export function setTokens(tokens: AuthTokens): void {
 // Retrieve tokens from localStorage
 export function getTokens(): AuthTokens | null {
     const stored = localStorage.getItem(TOKEN_STORAGE_KEY);
-    return stored ? JSON.parse(stored) : null;
+    return stored ? (JSON.parse(stored) as AuthTokens) : null;
 }
 
 // Get access token
@@ -41,6 +43,8 @@ export function clearTokens(): void {
     localStorage.removeItem(TOKEN_STORAGE_KEY);
 }
 
+// ========== AUTH API ==========
+
 export async function signup(payload: SignupPayload) {
     const res = await fetch(`${API_URL}/auth/signup`, {
         method: 'POST',
@@ -48,15 +52,20 @@ export async function signup(payload: SignupPayload) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
-        credentials: 'include',
     });
 
     if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.message || 'Signup failed');
+        let message = 'Signup failed';
+        try {
+            const err = await res.json();
+            message = err.message || message;
+        } catch {
+            // ignore parse error
+        }
+        throw new Error(message);
     }
 
-    const tokens = await res.json();
+    const tokens: AuthTokens = await res.json();
     setTokens(tokens);
     return tokens;
 }
@@ -68,15 +77,20 @@ export async function login(email: string, password: string) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
-        credentials: 'include',
     });
 
     if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.message || 'Login failed');
+        let message = 'Login failed';
+        try {
+            const err = await res.json();
+            message = err.message || message;
+        } catch {
+            // ignore parse error
+        }
+        throw new Error(message);
     }
 
-    const tokens = await res.json();
+    const tokens: AuthTokens = await res.json();
     setTokens(tokens);
     return tokens;
 }
@@ -92,7 +106,6 @@ export async function logout() {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${accessToken}`,
                 },
-                credentials: 'include',
             });
         }
     } catch (error) {
@@ -103,6 +116,14 @@ export async function logout() {
     }
 }
 
+/**
+ * Calls /auth/refresh using the refresh token.
+ *
+ * IMPORTANT:
+ * - Backend is expecting:
+ *    - Authorization: Bearer <refreshToken>  (guard: JwtAuthGuard using refresh JWT)
+ *    - body: { refreshToken }
+ */
 export async function refreshAccessToken() {
     const refreshToken = getRefreshToken();
 
@@ -114,10 +135,10 @@ export async function refreshAccessToken() {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            // we send the refresh token in the Authorization header
             Authorization: `Bearer ${refreshToken}`,
         },
         body: JSON.stringify({ refreshToken }),
-        credentials: 'include',
     });
 
     if (!res.ok) {
@@ -125,11 +146,15 @@ export async function refreshAccessToken() {
         throw new Error('Token refresh failed');
     }
 
-    const tokens = await res.json();
+    const tokens: AuthTokens = await res.json();
     setTokens(tokens);
     return tokens;
 }
 
+/**
+ * Simple check using /auth/profile.
+ * Returns true if the current access token is valid.
+ */
 export async function isAuthenticated(): Promise<boolean> {
     const accessToken = getAccessToken();
     if (!accessToken) return false;
@@ -139,7 +164,6 @@ export async function isAuthenticated(): Promise<boolean> {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
-            credentials: 'include',
         });
         return res.ok;
     } catch {
