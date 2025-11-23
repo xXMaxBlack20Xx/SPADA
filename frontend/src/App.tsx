@@ -4,13 +4,13 @@ import { getAccessToken } from './api/auth/authApi';
 import type { ReactNode } from 'react';
 import Header from './components/main/Header';
 import SpadaMain from './components/main/mainPage';
-import Login from './components/signIn/Login';
-import Register from './components/signUp/Register';
-import NotFound from './components/error/NotFound';
+import Login from './components/SignIn/Login';
+import Register from './components/SignUp/Register';
+import NotFound from './components/Error/NotFound';
 import Footer from './components/main/Footer';
 import Dashboard from './components/layouts/Dashboard';
-import PredictionsNBA from './components/dashboard/predictions/PredictionsNBA';
-import PredictionsNFL from './components/dashboard/predictions/PredictionsNFL';
+import PredictionsNBA from './components/dashboard/Predictions/PredictionsNBA';
+import PredictionsNFL from './components/dashboard/Predictions/PredictionsNFL';
 import Calendar from './components/dashboard/calendar/Calendar';
 
 import './App.css';
