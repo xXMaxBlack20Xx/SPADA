@@ -19,7 +19,7 @@ SPADA connects **front-end analytics** and **back-end intelligence** into one co
 | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | **Frontend**    | A fast and responsive interface built with _React + Vite + Tailwind_, offering seamless user experience and real-time data visualization. |
 | **Backend**     | A secure and scalable API developed with _NestJS_, responsible for managing users, predictions, and communication with the database.      |
-| **Data & Auth** | Integrated with _Firebase_ for user authentication and storage of prediction history.                                                     |
+| **Data & Auth** | Integrated with _Aragon2_ for user authentication and _Render_ storage of prediction history.                                                     |
 | **Deployment**  | Easily containerized using _Docker_ and ready for hosting on modern platforms.                                                            |
 
 ---
@@ -30,7 +30,7 @@ SPADA connects **front-end analytics** and **back-end intelligence** into one co
 - 📊 **Prediction Dashboard** — Displays statistics, metrics, and AI-based forecasts.
 - 🕹️ **Historical Records** — Tracks all predictions and user performance.
 - 🎨 **Clean Design** — Minimalist interface inspired by professional analytics tools.
-- 🧠 **AI Integration (Coming Soon)** — Predictive models and trend analysis powered by machine learning.
+- 💬 **Community Interaction** — Connect, share experiences, and engage in real-time conversations with other users.
 
 ---
 
@@ -38,7 +38,7 @@ SPADA connects **front-end analytics** and **back-end intelligence** into one co
 
 **Frontend:** React • Vite • Tailwind CSS  
 **Backend:** NestJS • Node.js • PostgreSQL  
-**Auth & Storage:** Firebase  
+**Auth & Storage:** Aragon2 • Render
 **Containerization:** Docker
 
 ---
@@ -53,9 +53,8 @@ It’s not just about predicting the outcome; it’s about understanding _why_ i
 ## 👥 Contributors
 
 **Rodrigo Trigo** — Full Stack Development & Architecture  
-**Eduardo Mojica** — Backend & API Design  
-**Raul Yepiz** — Data Analysis & Model Integration  
-**Emiliano Alvarado** — UI/UX Design & Branding
+**Eduardo Mojica** — Analysis & Testing
+**Raul Yepiz** — Data Analysis & Model Integration
 
 ---
 

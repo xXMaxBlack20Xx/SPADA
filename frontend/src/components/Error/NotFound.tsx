@@ -42,7 +42,7 @@ export default function NotFound() {
 
   return (
     <main
-      className="relative isolate min-h-[100svh] bg-[#1a1d21] text-white grid place-items-center px-6"
+      className="relative isolate min-h-svh bg-[#1a1d21] text-white grid place-items-center px-6"
       aria-labelledby="notfound-title"
       role="main"
     >
