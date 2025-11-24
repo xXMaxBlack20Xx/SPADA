@@ -75,7 +75,8 @@ function App() {
                         path="binnacle"
                         element={<h1 className="text-white">Binnacle Page</h1>}
                     />
-                    <Route path="stats" element={<NFLStats />} />
+                    <Route path="stats" element={<Navigate to="/dashboard/stats/nfl" replace />} />
+                    <Route path="stats/nfl" element={<NFLStats />} />
                     <Route
                         path="settings"
                         element={<h1 className="text-white">Settings Page</h1>}
