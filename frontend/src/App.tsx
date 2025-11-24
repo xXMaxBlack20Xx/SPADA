@@ -12,6 +12,7 @@ import Dashboard from './components/layouts/Dashboard';
 import PredictionsNBA from './components/dashboard/Predictions/PredictionsNBA';
 import PredictionsNFL from './components/dashboard/Predictions/PredictionsNFL';
 import Calendar from './components/dashboard/calendar/Calendar';
+import NFLStats from './components/dashboard/Stats/NFLStats';
 
 import './App.css';
 
@@ -74,7 +75,7 @@ function App() {
                         path="binnacle"
                         element={<h1 className="text-white">Binnacle Page</h1>}
                     />
-                    <Route path="stats" element={<h1 className="text-white">Stats Page</h1>} />
+                    <Route path="stats" element={<NFLStats />} />
                     <Route
                         path="settings"
                         element={<h1 className="text-white">Settings Page</h1>}
