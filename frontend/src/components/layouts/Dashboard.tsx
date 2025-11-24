@@ -46,7 +46,10 @@ const navItems: NavItem[] = [
     {
         label: 'Stats',
         icon: LuDatabase,
-        children: [{ label: 'NFL', path: '/dashboard/stats/nfl' }],
+        children: [
+            { label: 'NFL', path: '/dashboard/stats/nfl' },
+            { label: 'NBA', path: '/dashboard/stats/nba' },
+        ],
     },
     { label: 'Settings', path: '/dashboard/settings', icon: LuSettings },
 ];

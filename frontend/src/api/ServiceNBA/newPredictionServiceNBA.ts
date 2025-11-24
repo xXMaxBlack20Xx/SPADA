@@ -48,6 +48,18 @@ export const fetchNBAPredictions = async (): Promise<NBAPrediction[]> => {
                       predicted_winner: toAbbrev(item.predicted_winner),
 
                       prob_home_win: Number(item.prob_home_win),
+                      pts_home:
+                          typeof item.pts_home === 'number'
+                              ? item.pts_home
+                              : item.pts_home !== null && item.pts_home !== undefined
+                                ? Number(item.pts_home)
+                                : null,
+                      pts_away:
+                          typeof item.pts_away === 'number'
+                              ? item.pts_away
+                              : item.pts_away !== null && item.pts_away !== undefined
+                                ? Number(item.pts_away)
+                                : null,
                       pred_timestamp_utc: String(item.pred_timestamp_utc),
 
                       model_metadata: item.model_metadata ?? {},

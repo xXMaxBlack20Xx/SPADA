@@ -13,6 +13,7 @@ import PredictionsNBA from './components/dashboard/Predictions/PredictionsNBA';
 import PredictionsNFL from './components/dashboard/Predictions/PredictionsNFL';
 import Calendar from './components/dashboard/calendar/Calendar';
 import NFLStats from './components/dashboard/Stats/NFLStats';
+import NBAStats from './components/dashboard/Stats/NBAStats';
 
 import './App.css';
 
@@ -77,6 +78,7 @@ function App() {
                     />
                     <Route path="stats" element={<Navigate to="/dashboard/stats/nfl" replace />} />
                     <Route path="stats/nfl" element={<NFLStats />} />
+                    <Route path="stats/nba" element={<NBAStats />} />
                     <Route
                         path="settings"
                         element={<h1 className="text-white">Settings Page</h1>}
