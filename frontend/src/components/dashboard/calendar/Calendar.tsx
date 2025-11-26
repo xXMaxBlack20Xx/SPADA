@@ -6,7 +6,7 @@ import {
     fetchSavedGames,
     toggleGameSave,
     type CalendarGame,
-} from '../../../api/calendar/calendarService';
+} from '../../../api/serviceCalendar/calendarService';
 
 export default function CalendarPage() {
     // We treat this as the "current month" reference (always day 1)

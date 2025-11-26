@@ -4,7 +4,7 @@ import { fetchNBAPredictions } from '../../../api/serviceNBA/newPredictionServic
 import type { NBAPrediction } from '../../../types/nbaPredictionsInterface';
 import { getNBALogo } from '../../../lib/NBA/nbaLogos';
 import nbaLogo from '../../../assets/logos/nba.png';
-import { togglePickPrediction, fetchUserPicks } from '../../../api/serviceUser/picksService';
+import { togglePickPrediction, fetchUserPicks } from '../../../api/servicePick/picksService';
 import {
     LuCalendar,
     LuTrendingUp,

@@ -3,7 +3,7 @@ import {
     fetchNFLPredictions,
     type NFLPrediction,
 } from '../../../api/serviceNFL/newPredictionServiceNFL';
-import { togglePickPrediction, fetchUserPicks } from '../../../api/serviceUser/picksService';
+import { togglePickPrediction, fetchUserPicks } from '../../../api/servicePick/picksService';
 import { getNFLLogo } from '../../../lib/NFL/nflLogos';
 import { toAbbrev } from '../../../lib/NFL/nflTeamMap';
 import nflLogo from '../../../assets/logos/nfl.png';

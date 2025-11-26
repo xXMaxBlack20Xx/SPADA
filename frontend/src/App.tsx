@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes, Outlet } from 'react-router-dom';
 import { LanguageProvider } from './context/LanguageContext';
-import { getAccessToken } from './api/auth/authApi';
+import { getAccessToken } from './api/serviceAuth/authApi';
 import type { ReactNode } from 'react';
 import Header from './components/main/Header';
 import SpadaMain from './components/main/mainPage';
@@ -14,6 +14,8 @@ import PredictionsNFL from './components/dashboard/predictions/PredictionsNFL';
 import Calendar from './components/dashboard/calendar/Calendar';
 
 import './App.css';
+import Binnacle from './components/dashboard/binnacle/Binnacle';
+import Settings from './components/dashboard/setttings/Settings';
 
 const ProtectedRoute = ({ children }: { children: ReactNode }) => {
     const token = getAccessToken();
@@ -57,28 +59,22 @@ function App() {
                         </ProtectedRoute>
                     }
                 >
-                    {/* This ensures /dashboard redirects to /dashboard/predict by default */}
+                    {/* This ensures /dashboard redirects to the house hall */}
                     <Route index element={<Navigate to="/dashboard" replace />} />
 
                     {/* The new component */}
                     <Route path="predictNBA" element={<PredictionsNBA />} />
                     <Route path="predictNFL" element={<PredictionsNFL />} />
                     <Route path="calendar" element={<Calendar />} />
-
-                    {/* Placeholders for the other links so they don't 404 */}
+                    <Route path="binnacle" element={<Binnacle />} />
                     <Route
                         path="community"
                         element={<h1 className="text-white">Community Page</h1>}
                     />
-                    <Route
-                        path="binnacle"
-                        element={<h1 className="text-white">Binnacle Page</h1>}
-                    />
+                    <Route path="settings" element={<Settings />} />
+
+                    {/* Placeholders for the other links so they don't 404 */}
                     <Route path="stats" element={<h1 className="text-white">Stats Page</h1>} />
-                    <Route
-                        path="settings"
-                        element={<h1 className="text-white">Settings Page</h1>}
-                    />
                 </Route>
             </Routes>
         </LanguageProvider>

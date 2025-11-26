@@ -1,4 +1,4 @@
-import { IsEmail, IsOptional, IsString, Matches, MinLength } from 'class-validator';
+import { IsEmail, IsOptional, IsString, IsUrl, Matches, MinLength } from 'class-validator';
 
 export class UpdateUserDto {
     @IsOptional()
@@ -18,4 +18,9 @@ export class UpdateUserDto {
         message: 'PASSWORD_WEAK',
     })
     password?: string;
+
+    @IsOptional()
+    @IsString()
+    @IsUrl()
+    avatarUrl?: string;
 }

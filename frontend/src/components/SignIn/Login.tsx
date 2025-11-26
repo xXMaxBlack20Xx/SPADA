@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { useState } from 'react';
-import { login } from '../../api/auth/authApi';
+import { login } from '../../api/serviceAuth/authApi';
 import background from '../../assets/img/sign/background.webp';
 
 type Lang = 'es' | 'en' | 'zh';

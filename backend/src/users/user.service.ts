@@ -5,6 +5,7 @@ import { User, UserRole, AccountStatus } from './entities/user.entity';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UpdateUserRoleDto } from './dtos/update-user-role.dto';
 import { UpdateUserStatusDto } from './dtos/update-user-status.dto';
+import * as argon2 from 'argon2';
 
 @Injectable()
 export class UserService {
@@ -75,8 +76,19 @@ export class UserService {
     async update(id: string, data: UpdateUserDto): Promise<User> {
         const user = await this.getOrFail(id);
 
+        if (data.password) {
+            data.password = await argon2.hash(data.password);
+        }
+
         const merged = this.usersRepository.merge(user, data);
         return this.usersRepository.save(merged);
+    }
+
+    // Update only the avatar URL
+    async updateAvatar(id: string, avatarPath: string): Promise<User> {
+        const user = await this.getOrFail(id);
+        user.avatarUrl = avatarPath;
+        return this.usersRepository.save(user);
     }
 
     /**

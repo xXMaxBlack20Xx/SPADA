@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
-import { signup } from '../../api/auth/authApi';
+import { signup } from '../../api/serviceAuth/authApi';
 import background from '../../assets/img/sign/background.webp';
 
 type Lang = 'es' | 'en' | 'zh';

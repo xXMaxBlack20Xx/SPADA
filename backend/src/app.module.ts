@@ -11,6 +11,7 @@ import { PicksModule } from './picks/picks.module';
 import { NbaPredictionsModule } from './nba-predictions/nba-predictions.module';
 import { CalendarModule } from './calendar/calendar.module';
 import { NflPredictionsModule } from './nfl-predictions/nfl-predictions.module';
+import { UserBetsModule } from './binnacle/user-bets.module';
 
 @Module({
     imports: [
@@ -31,7 +32,7 @@ import { NflPredictionsModule } from './nfl-predictions/nfl-predictions.module';
                 database: config.get<string>('POSTGRES_DB'),
 
                 autoLoadEntities: true,
-                
+
                 // Cuando se tiene la app en produccion, no se debe usar synchronize: true
                 synchronize: false,
 
@@ -48,6 +49,7 @@ import { NflPredictionsModule } from './nfl-predictions/nfl-predictions.module';
         UserModule,
         AuthModule,
         PicksModule,
+        UserBetsModule,
         CalendarModule,
         NbaPredictionsModule,
         NflPredictionsModule,

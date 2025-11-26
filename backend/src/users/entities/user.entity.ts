@@ -9,6 +9,7 @@ import {
     Index,
 } from 'typeorm';
 import { Pick } from '../../picks/entities/pick.entity';
+import { UserBet } from 'src/binnacle/entities/user-bet.entity';
 
 //Roles
 export enum UserRole {
@@ -62,6 +63,9 @@ export class User {
     })
     status: AccountStatus;
 
+    @Column({ nullable: true })
+    avatarUrl?: string;
+
     @CreateDateColumn()
     createdAt: Date;
 
@@ -70,4 +74,7 @@ export class User {
 
     @OneToMany(() => Pick, (pick) => pick.user, { cascade: true })
     picks: Pick[];
+
+    @OneToMany(() => UserBet, (bet) => bet.user, { cascade: true })
+    bets: UserBet[];
 }

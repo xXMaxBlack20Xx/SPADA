@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { LanguageContext } from '../../context/LanguageContext';
-import { fetchUserProfile } from '../../api/auth/userService';
+import { fetchUserProfile } from '../../api/serviceUser/userService';
 import spadaLogo from '../../assets/logos/spada.png';
 
 import {
