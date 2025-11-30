@@ -39,10 +39,9 @@ const moneylineToProbability = (moneyline: number): number => {
 };
 
 // Generate mock moneyline odds based on model probability (for comparison)
-// In a real scenario, you'd fetch actual moneyline odds from an API
 const generateMockMoneyline = (modelProb: number): number => {
     // Add some variance to simulate real betting odds
-    const variance = (Math.random() - 0.5) * 0.1; // ±5% variance
+    const variance = (Math.random() - 0.5) * 0.1; 
     const adjustedProb = Math.max(0.05, Math.min(0.95, modelProb + variance));
     return probabilityToMoneyline(adjustedProb);
 };

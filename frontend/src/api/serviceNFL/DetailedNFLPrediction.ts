@@ -26,6 +26,12 @@ export interface DetailedNFLPrediction {
     };
     created_at: string;
     updated_at: string;
+    away_moneyline: number | null;
+    home_moneyline: number | null;
+    away_moneyline_implied: number | null;
+    home_moneyline_implied: number | null;
+
+
 }
 
 // Fetch detailed NFL predictions with scores
