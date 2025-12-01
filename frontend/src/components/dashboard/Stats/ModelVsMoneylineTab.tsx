@@ -31,6 +31,7 @@ const probabilityToMoneyline = (prob: number): number => {
 
 // Convert moneyline to probability
 const moneylineToProbability = (moneyline: number): number => {
+    if (!Number.isFinite(moneyline)) return 0;
     if (moneyline > 0) {
         return 100 / (moneyline + 100);
     } else {
@@ -38,18 +39,10 @@ const moneylineToProbability = (moneyline: number): number => {
     }
 };
 
-// Generate mock moneyline odds based on model probability (for comparison)
-const generateMockMoneyline = (modelProb: number): number => {
-    // Add some variance to simulate real betting odds
-    const variance = (Math.random() - 0.5) * 0.1; 
-    const adjustedProb = Math.max(0.05, Math.min(0.95, modelProb + variance));
-    return probabilityToMoneyline(adjustedProb);
-};
-
 export default function ModelVsMoneylineTab({
     predictions,
 }: ModelVsMoneylineTabProps) {
-    // Process data for charts
+    // Process data for charts (only include completed games)
     const chartData = useMemo(() => {
         const completedGames = predictions.filter(
             (game) => game.home_score !== null && game.away_score !== null,
@@ -63,13 +56,35 @@ export default function ModelVsMoneylineTab({
                         : game.prob_home_win || 0;
 
                 const modelMoneyline = probabilityToMoneyline(probHomeWin);
-                const mockMoneyline = generateMockMoneyline(probHomeWin);
+
+                // Use provided house moneyline/implied values from the entity when available
+                const homeMl = Number.isFinite(Number(game.home_moneyline)) ? Number(game.home_moneyline) : null;
+                // Prefer any explicit implied probability fields if present, otherwise compute from moneyline
+                const homeImplied = Number.isFinite(Number(game.home_moneyline_implied))
+                    ? Number(game.home_moneyline_implied)
+                    : homeMl !== null
+                        ? moneylineToProbability(homeMl)
+                        : null;
+
+                // If we have implied probabilities use them; fall back to model-based conversion if missing
+                const houseProb = homeImplied !== null ? homeImplied : null;
+                const houseMoneyline = homeMl !== null ? homeMl : (houseProb !== null ? probabilityToMoneyline(houseProb) : null);
+                const houseProbPct = houseProb !== null ? houseProb * 100 : null;
+
                 const modelProb = probHomeWin * 100;
-                const mockProb = moneylineToProbability(mockMoneyline) * 100;
+                const modelProbRounded = Number(modelProb.toFixed(1));
+                const houseProbRounded = houseProbPct !== null ? Number(houseProbPct.toFixed(1)) : null;
 
                 const actualWinner =
                     (game.home_score || 0) > (game.away_score || 0) ? 'home' : 'away';
                 const modelPredicted = probHomeWin >= 0.5 ? 'home' : 'away';
+                const housePredicted = houseProb !== null ? (houseProb >= 0.5 ? 'home' : 'away') : null;
+
+                const totalLine = typeof game.total_line === 'string' ? parseFloat(game.total_line) : Number(game.total_line);
+                const actualTotal = (game.home_score || 0) + (game.away_score || 0);
+                const overUnderResult = totalLine && !Number.isNaN(totalLine)
+                    ? actualTotal > totalLine ? 'over' : actualTotal < totalLine ? 'under' : 'push'
+                    : 'na';
 
                 return {
                     gameId: game.game_id.substring(0, 8),
@@ -78,12 +93,15 @@ export default function ModelVsMoneylineTab({
                         month: 'short',
                         day: 'numeric',
                     }),
-                    modelProb: Number(modelProb.toFixed(1)),
-                    mockMoneylineProb: Number(mockProb.toFixed(1)),
+                    modelProb: modelProbRounded,
+                    houseProb: houseProbRounded,
                     modelMoneyline,
-                    mockMoneyline,
+                    houseMoneyline: houseMoneyline,
                     modelCorrect: modelPredicted === actualWinner,
-                    mockCorrect: (mockProb / 100 >= 0.5 ? 'home' : 'away') === actualWinner,
+                    houseCorrect: housePredicted !== null ? housePredicted === actualWinner : null,
+                    overUnderResult,
+                    totalLine: Number.isFinite(totalLine) ? totalLine : null,
+                    actualTotal,
                 };
             })
             .sort((a, b) => a.week - b.week);
@@ -91,17 +109,17 @@ export default function ModelVsMoneylineTab({
 
     // Aggregate data by week
     const weeklyData = useMemo(() => {
-        const weeklyMap = new Map<number, { modelCorrect: number; mockCorrect: number; total: number }>();
+        const weeklyMap = new Map<number, { modelCorrect: number; houseCorrect: number; total: number }>();
 
         chartData.forEach((game) => {
             const existing = weeklyMap.get(game.week) || {
                 modelCorrect: 0,
-                mockCorrect: 0,
+                houseCorrect: 0,
                 total: 0,
             };
             existing.total++;
             if (game.modelCorrect) existing.modelCorrect++;
-            if (game.mockCorrect) existing.mockCorrect++;
+            if (game.houseCorrect) existing.houseCorrect++;
             weeklyMap.set(game.week, existing);
         });
 
@@ -109,38 +127,70 @@ export default function ModelVsMoneylineTab({
             .map(([week, data]) => ({
                 week: `Week ${week}`,
                 modelAccuracy: Number(((data.modelCorrect / data.total) * 100).toFixed(1)),
-                mockAccuracy: Number(((data.mockCorrect / data.total) * 100).toFixed(1)),
+                houseAccuracy: Number(((data.houseCorrect / data.total) * 100).toFixed(1)),
             }))
             .sort((a, b) => parseInt(a.week.split(' ')[1]) - parseInt(b.week.split(' ')[1]));
     }, [chartData]);
 
     // Probability distribution comparison
     const probabilityBins = useMemo(() => {
-        const bins: Record<string, { model: number; mock: number }> = {};
+        const bins: Record<string, { model: number; house: number }> = {};
         const binSize = 10; // 10% bins
 
         chartData.forEach((game) => {
             const bin = Math.floor(game.modelProb / binSize) * binSize;
             const binKey = `${bin}-${bin + binSize}%`;
             if (!bins[binKey]) {
-                bins[binKey] = { model: 0, mock: 0 };
+                bins[binKey] = { model: 0, house: 0 };
             }
             bins[binKey].model++;
-            const mockBin = Math.floor(game.mockMoneylineProb / binSize) * binSize;
-            const mockBinKey = `${mockBin}-${mockBin + binSize}%`;
-            if (!bins[mockBinKey]) {
-                bins[mockBinKey] = { model: 0, mock: 0 };
+
+            if (game.houseProb !== null) {
+                const houseBin = Math.floor(game.houseProb / binSize) * binSize;
+                const houseBinKey = `${houseBin}-${houseBin + binSize}%`;
+                if (!bins[houseBinKey]) bins[houseBinKey] = { model: 0, house: 0 };
+                bins[houseBinKey].house++;
             }
-            bins[mockBinKey].mock++;
         });
 
         return Object.entries(bins)
             .map(([bin, counts]) => ({
                 bin,
                 model: counts.model,
-                mock: counts.mock,
+                house: counts.house,
             }))
             .sort((a, b) => parseInt(a.bin) - parseInt(b.bin));
+    }, [chartData]);
+
+    // Over/Under totals across all completed games
+    const overUnderStats = useMemo(() => {
+        let over = 0;
+        let under = 0;
+        let push = 0;
+        let na = 0;
+
+        chartData.forEach((g) => {
+            if (g.overUnderResult === 'over') over++;
+            else if (g.overUnderResult === 'under') under++;
+            else if (g.overUnderResult === 'push') push++;
+            else na++;
+        });
+
+        const totalWithLine = over + under + push;
+        const overPct = totalWithLine ? (over / totalWithLine) * 100 : 0;
+        const underPct = totalWithLine ? (under / totalWithLine) * 100 : 0;
+        const pushPct = totalWithLine ? (push / totalWithLine) * 100 : 0;
+
+        return {
+            over,
+            under,
+            push,
+            na,
+            totalWithLine,
+            overPct: Number(overPct.toFixed(1)),
+            underPct: Number(underPct.toFixed(1)),
+            pushPct: Number(pushPct.toFixed(1)),
+        };
     }, [chartData]);
 
     if (chartData.length === 0) {
@@ -154,15 +204,15 @@ export default function ModelVsMoneylineTab({
 
     // Calculate overall stats
     const modelCorrect = chartData.filter((g) => g.modelCorrect).length;
-    const mockCorrect = chartData.filter((g) => g.mockCorrect).length;
+    const houseCorrect = chartData.filter((g) => g.houseCorrect).length;
     const totalGames = chartData.length;
     const modelAccuracy = (modelCorrect / totalGames) * 100;
-    const mockAccuracy = (mockCorrect / totalGames) * 100;
+    const houseAccuracy = (houseCorrect / totalGames) * 100;
 
     return (
         <div className="space-y-6">
             {/* Summary Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
                     <div className="flex items-center justify-between mb-4">
                         <h3 className="text-gray-400 text-sm uppercase tracking-wider">
@@ -179,13 +229,13 @@ export default function ModelVsMoneylineTab({
                 <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
                     <div className="flex items-center justify-between mb-4">
                         <h3 className="text-gray-400 text-sm uppercase tracking-wider">
-                            Moneyline Accuracy
+                            House (real) Accuracy
                         </h3>
                         <LuDollarSign className="text-green-400" size={24} />
                     </div>
-                    <p className="text-3xl font-bold text-white">{mockAccuracy.toFixed(1)}%</p>
+                    <p className="text-3xl font-bold text-white">{houseAccuracy.toFixed(1)}%</p>
                     <p className="text-xs text-gray-500 mt-2">
-                        {mockCorrect} of {totalGames} correct
+                        {houseCorrect} of {totalGames} correct
                     </p>
                 </div>
 
@@ -198,22 +248,35 @@ export default function ModelVsMoneylineTab({
                     </div>
                     <p
                         className={`text-3xl font-bold ${
-                            modelAccuracy > mockAccuracy
+                            modelAccuracy > houseAccuracy
                                 ? 'text-green-400'
-                                : modelAccuracy < mockAccuracy
+                                : modelAccuracy < houseAccuracy
                                   ? 'text-red-400'
                                   : 'text-white'
                         }`}
                     >
-                        {(modelAccuracy - mockAccuracy).toFixed(1)}%
+                        {(modelAccuracy - houseAccuracy).toFixed(1)}%
                     </p>
                     <p className="text-xs text-gray-500 mt-2">
-                        {modelAccuracy > mockAccuracy
+                        {modelAccuracy > houseAccuracy
                             ? 'Model outperforming'
-                            : modelAccuracy < mockAccuracy
-                              ? 'Moneyline outperforming'
+                            : modelAccuracy < houseAccuracy
+                              ? 'House outperforming'
                               : 'Tied'}
                     </p>
+                </div>
+
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
+                    <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-gray-400 text-sm uppercase tracking-wider">
+                            Over / Under (all completed games)
+                        </h3>
+                        <LuTarget className="text-indigo-400" size={24} />
+                    </div>
+                    <p className="text-2xl font-bold text-white">{overUnderStats.totalWithLine} lined</p>
+                    <p className="text-xs text-gray-500 mt-2">Over: {overUnderStats.over} ({overUnderStats.overPct}%)</p>
+                    <p className="text-xs text-gray-500">Under: {overUnderStats.under} ({overUnderStats.underPct}%)</p>
+                    {overUnderStats.push > 0 && <p className="text-xs text-gray-500">Push: {overUnderStats.push} ({overUnderStats.pushPct}%)</p>}
                 </div>
             </div>
 
@@ -259,10 +322,10 @@ export default function ModelVsMoneylineTab({
                         />
                         <Line
                             type="monotone"
-                            dataKey="mockAccuracy"
+                            dataKey="houseAccuracy"
                             stroke="#10b981"
                             strokeWidth={3}
-                            name="Moneyline"
+                            name="House"
                             dot={{ fill: '#10b981', r: 5 }}
                         />
                     </LineChart>
@@ -304,24 +367,19 @@ export default function ModelVsMoneylineTab({
                             }}
                         />
                         <Legend />
-                        <Bar dataKey="model" fill="#6366f1" name="Model" radius={[8, 8, 0, 0]} />
-                        <Bar
-                            dataKey="mock"
-                            fill="#10b981"
-                            name="Moneyline"
-                            radius={[8, 8, 0, 0]}
-                        />
+                        <Bar dataKey="model" name="Model" radius={[8, 8, 0, 0]} fill="#6366f1" />
+                        <Bar dataKey="house" name="House" radius={[8, 8, 0, 0]} fill="#10b981" />
                     </BarChart>
                 </ResponsiveContainer>
             </div>
 
-            {/* Game-by-Game Comparison */}
+            {/* Game-by-Game Comparison (ALL completed games) */}
             <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
                 <h2 className="text-2xl font-bold text-white mb-6">
-                    Model vs Moneyline Probabilities
+                    Model vs House Probabilities — All Completed Games
                 </h2>
                 <ResponsiveContainer width="100%" height={500}>
-                    <LineChart data={chartData.slice(0, 20)}>
+                    <LineChart data={chartData}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" />
                         <XAxis
                             dataKey="date"
@@ -360,21 +418,18 @@ export default function ModelVsMoneylineTab({
                         />
                         <Line
                             type="monotone"
-                            dataKey="mockMoneylineProb"
+                            dataKey="houseProb"
                             stroke="#10b981"
                             strokeWidth={2}
-                            name="Moneyline Probability"
+                            name="House Probability"
                             dot={{ fill: '#10b981', r: 3 }}
                         />
                     </LineChart>
                 </ResponsiveContainer>
-                {chartData.length > 20 && (
-                    <p className="text-sm text-gray-400 mt-4 text-center">
-                        Showing first 20 games. Total: {chartData.length} games
-                    </p>
-                )}
+                <p className="text-sm text-gray-400 mt-4 text-center">
+                    Showing all completed games. Total: {chartData.length} games
+                </p>
             </div>
         </div>
     );
 }
-
