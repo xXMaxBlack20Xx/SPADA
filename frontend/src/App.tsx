@@ -4,14 +4,16 @@ import { getAccessToken } from './api/serviceAuth/authApi';
 import type { ReactNode } from 'react';
 import Header from './components/main/Header';
 import SpadaMain from './components/main/mainPage';
-import Login from './components/signIn/Login';
-import Register from './components/signUp/Register';
-import NotFound from './components/error/NotFound';
+import Login from './components/SignIn/Login';
+import Register from './components/SignUp/Register';
+import NotFound from './components/Error/NotFound';
 import Footer from './components/main/Footer';
 import Dashboard from './components/layouts/Dashboard';
-import PredictionsNBA from './components/dashboard/predictions/PredictionsNBA';
-import PredictionsNFL from './components/dashboard/predictions/PredictionsNFL';
+import PredictionsNBA from './components/dashboard/Predictions/PredictionsNBA';
+import PredictionsNFL from './components/dashboard/Predictions/PredictionsNFL';
 import Calendar from './components/dashboard/calendar/Calendar';
+import NFLStats from './components/dashboard/Stats/NFLStats';
+import NBAStats from './components/dashboard/Stats/NBAStats';
 
 import './App.css';
 import Binnacle from './components/dashboard/binnacle/Binnacle';
@@ -71,10 +73,24 @@ function App() {
                         path="community"
                         element={<h1 className="text-white">Community Page</h1>}
                     />
+<<<<<<< HEAD
                     <Route path="settings" element={<Settings />} />
 
                     {/* Placeholders for the other links so they don't 404 */}
                     <Route path="stats" element={<h1 className="text-white">Stats Page</h1>} />
+=======
+                    <Route
+                        path="binnacle"
+                        element={<h1 className="text-white">Binnacle Page</h1>}
+                    />
+                    <Route path="stats" element={<Navigate to="/dashboard/stats/nfl" replace />} />
+                    <Route path="stats/nfl" element={<NFLStats />} />
+                    <Route path="stats/nba" element={<NBAStats />} />
+                    <Route
+                        path="settings"
+                        element={<h1 className="text-white">Settings Page</h1>}
+                    />
+>>>>>>> ef20011f2353a5513c3ff691f782c2f415bee1ee
                 </Route>
             </Routes>
         </LanguageProvider>

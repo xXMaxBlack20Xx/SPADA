@@ -1,6 +1,6 @@
 //import { Outlet } from 'react-router-dom'; // We need to do the logic for the children routes
 import { useState, useEffect } from 'react';
-import { fetchNBAPredictions } from '../../../api/serviceNBA/newPredictionServiceNBA';
+import { fetchNBAPredictions } from '../../../api/ServiceNBA/newPredictionServiceNBA';
 import type { NBAPrediction } from '../../../types/nbaPredictionsInterface';
 import { getNBALogo } from '../../../lib/NBA/nbaLogos';
 import nbaLogo from '../../../assets/logos/nba.png';
