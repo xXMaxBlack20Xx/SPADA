@@ -25,6 +25,17 @@ export default function PerformanceTab({ predictions }: PerformanceTabProps) {
         [predictions],
     );
 
+    // Helper: normalize prob_home_win to a 0..1 number
+    const normalizeProb = (raw: number | string | null | undefined) => {
+        let p =
+            typeof raw === 'string' ? parseFloat(raw) : typeof raw === 'number' ? raw : 0;
+        if (!isFinite(p)) p = 0;
+        // If model supplied percent-like value (e.g., 38.9), convert to 0..1
+        if (p > 1) p = p / 100;
+        // clamp
+        return Math.max(0, Math.min(1, p));
+    };
+
     // Calculate statistics
     const stats = useMemo(() => {
         if (completedGames.length === 0) {
@@ -89,6 +100,15 @@ export default function PerformanceTab({ predictions }: PerformanceTabProps) {
                 ? game.home_team
                 : game.away_team;
         return predictedWinner === actualWinner;
+    };
+
+    // Helper to get the probability to display for the predicted team
+    const getDisplayProb = (game: DetailedNFLPrediction) => {
+        const probHomeWin = normalizeProb(game.prob_home_win);
+        const predictedIsHome = game.predicted_home_win === 1;
+        let displayProb = predictedIsHome ? probHomeWin : 1 - probHomeWin;
+        if (!isFinite(displayProb)) displayProb = 0;
+        return Math.max(0, Math.min(1, displayProb));
     };
 
     return (
@@ -184,10 +204,7 @@ export default function PerformanceTab({ predictions }: PerformanceTabProps) {
                                         ? game.home_team
                                         : game.away_team;
 
-                                const probHomeWin =
-                                    typeof game.prob_home_win === 'string'
-                                        ? parseFloat(game.prob_home_win)
-                                        : game.prob_home_win || 0;
+                                const displayProb = getDisplayProb(game);
 
                                 return (
                                     <div
@@ -303,7 +320,7 @@ export default function PerformanceTab({ predictions }: PerformanceTabProps) {
                                                 <span className="text-gray-400">Predicted: </span>
                                                 <span className="text-white font-medium">
                                                     {toAbbrev(predictedWinner)} (
-                                                    {(probHomeWin * 100).toFixed(1)}%)
+                                                    {(displayProb * 100).toFixed(1)}%)
                                                 </span>
                                             </div>
                                             <div>
@@ -322,4 +339,3 @@ export default function PerformanceTab({ predictions }: PerformanceTabProps) {
         </>
     );
 }
-
