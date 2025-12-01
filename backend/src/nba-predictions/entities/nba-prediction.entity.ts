@@ -34,4 +34,11 @@ export class NbaPrediction {
 
     @Column({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
     updated_at: Date;
+
+    // new columns 
+    @Column({ type: 'int', nullable: true })
+    pts_home: number | null;
+
+    @Column({ type: 'int', nullable: true })
+    pts_away: number | null;
 }

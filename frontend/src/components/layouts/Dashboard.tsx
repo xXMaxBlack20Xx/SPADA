@@ -43,7 +43,14 @@ const navItems: NavItem[] = [
     { label: 'Calender', path: '/dashboard/calendar', icon: LuCalendar },
     { label: 'Community', path: '/dashboard/community', icon: LuUsers },
     { label: 'Binnacle', path: '/dashboard/binnacle', icon: LuClipboardList },
-    { label: 'Stats', path: '/dashboard/stats', icon: LuDatabase },
+    {
+        label: 'Stats',
+        icon: LuDatabase,
+        children: [
+            { label: 'NFL', path: '/dashboard/stats/nfl' },
+            { label: 'NBA', path: '/dashboard/stats/nba' },
+        ],
+    },
     { label: 'Settings', path: '/dashboard/settings', icon: LuSettings },
 ];
 

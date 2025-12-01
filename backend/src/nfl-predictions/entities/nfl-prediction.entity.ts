@@ -27,7 +27,7 @@ export class NflPrediction {
     away_score: number;
 
     // Numeric columns usually come back as strings in JS, so we parse them later
-    @Column({ type: 'numeric', nullable: true }) 
+    @Column({ type: 'numeric', nullable: true })
     spread_line: number;
 
     @Column({ type: 'numeric', nullable: true })
@@ -50,4 +50,18 @@ export class NflPrediction {
 
     @UpdateDateColumn({ type: 'timestamptz' })
     updated_at: Date;
+
+    @Column({ type: 'real', nullable: true })
+    away_moneyline: number;
+
+    @Column({ type: 'real', nullable: true })
+    home_moneyline: number;
+
+    @Column({ type: 'real', nullable: true })
+    away_moneyline_implied: number;
+
+    @Column({ type: 'real', nullable: true })
+    home_moneyline_implied: number;
+
+
 }

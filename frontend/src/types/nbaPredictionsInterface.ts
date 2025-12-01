@@ -5,6 +5,8 @@ export interface NBAPrediction {
     team_name_away: string;
     prob_home_win: number;
     predicted_winner: string;
+    pts_home: number | null;
+    pts_away: number | null;
 
     pred_timestamp_utc: string;
 
